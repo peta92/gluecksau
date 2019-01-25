@@ -1,0 +1,18 @@
+{
+    "luckyPig":"Glücksau",
+    "rules":"Regeln",
+    "history":"Verlauf",
+    "countPoints": "Punkte zählen",
+    "rules_organization_title": "Organisation",
+    "rules_organization_text": "Eine dicke Matte befindet sich in der Mitte der Halle und ist die Homebase der Läufermannschaft. In einer Ecke befindet sich eine weitere dicke Matte, die Homebase der Fängermannschaft. Mehrere Hindernisse werden in der Turnhalle verteilt.",
+    "rules_procedure_title": "Ablauf",
+    "rules_procedure_text": "Das erste Kind der Läufermannschaft macht sich bereit, um beim Startpfiff in der Hallenmitte loszulaufen und möglichst viele Punkte zu sammeln. Die Reihenfolge der Elemente ist egal, sie dürfen mehrmals angelaufen werden, jedoch nicht zweimal hintereinander das Gleiche. Solange der Läufer nicht von der Fängermannschaft getroffen wird, darf er selber entscheiden, wie lange er Punkte sammeln will. Wird der Läufer von der Fängermannschaft getroffen, ist er out und verliert all seine Punkte. Der Läufer kann seine Punkte sichern, indem er zurück zur Homebase läuft und sich auswechseln lässt. Ist er mit beiden Füssen auf der Matte, darf der nächste Läufer los laufen. Es wird vor Beginn des Spiels eine Läuferreihenfolge festgelegt, die nicht verändert werden darf. Fängergruppe: Beim Anpfiff müssen zuerst alle Teammitglieder (mit beiden Füssen gleichzeitig) auf der Matte sein und erst danach kann der Läufer mit dem Softball getroffen werden. Mit dem Ball darf zu keinem Zeitpunkt gelaufen werden (auch nicht während dem Neutralisieren). Trifft die Feldmannschaft den Läufer (Pfiff von Schiedsrichter) muss der Ball neutralisiert werden und alle Kinder der Fängergruppe müssen mit dem Ball auf ihre dicke Matte in der Ecke, bevor sie wieder ins Feld dürfen. Beim Läuferwechsel, ohne dass der Läufer getroffen wurde, muss der Ball nicht neutralisiert werden und es kann direkt weitergespielt werden. Während dem Neutralisieren des Balles von der Fängermannschaft, darf die Läufergruppe bereits wieder anfangen Punkte zu sammeln. Das Spiel ist zu Ende, wenn die Spielzeit abgelaufen ist.",
+    "rules_assessment_title":"Wertung",
+    "rules_assessment_text": "Wer am Schluss mehr Punkte hat, gewinnt die Spielrunde. Ein Sieg gibt drei Punkte, ein Unentschieden einen Punkt und eine Niederlage null Punkte. In der Vorrunde können die Spiele unentschieden enden. In den Finalspielen gibt es kein Unentschieden. Dann entscheidet der höchste Einzellauf.",
+    "rules_referee_title":"Schiedsrichter",
+    "rules_referee_text": "Der Schiedsrichter entscheidet. Pro Feld sind zwei Schiedsrichter eingeteilt.",
+    "rules_punishment_title":"Zeitspiel, gefährliches Spiel oder unsportliches Verhalten",
+    "rules_punishment_text": "Beim ersten Mal im Spiel -> Mannschaftsverwarnung; beim zweiten Mal -> 10 Strafpunkte; beim dritten Mal Disqualifikation, der Gegner gewinnt 30:0.",
+    "rules_points_title":"Punkte",
+    "rules_points_text": "1 Punkt: Kasten berühren \n2 Punkte: Rolle über 16er Matte \n3 Punkte: Durch den Reifen \n4 Punkte: Überspringen eines Böcklis \n5 Punkte Unterkriechen der Langbank \nVerdoppelung aller Punkte beim Drücken eines Buzzers."
+}

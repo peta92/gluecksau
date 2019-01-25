@@ -1,17 +1,16 @@
-import LocalizedStrings from 'react-native-localization';
- 
-// CommonJS syntax
-// let LocalizedStrings  = require ('react-native-localization');
- 
-let strings = new LocalizedStrings({
- en:{
-   rules:"rules",
-   history:"history",
-   softBoiledEgg:"Soft-boiled egg",
-   choice:"How to choose the egg"
- },
- de: {
-    rules:"Regeln",
-    history:"Verlauf"
- }
-});
+import { Localization } from 'expo-localization';
+import i18n from 'i18n-js';
+
+
+function Capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+let de = require('./strings/de.json');
+let en = require('./strings/en.json');
+
+i18n.fallbacks = true;
+i18n.translations = {en, de};
+i18n.locale = Localization.locale; 
+
+export {i18n, Capitalize };
