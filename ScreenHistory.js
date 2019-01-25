@@ -1,28 +1,27 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, Alert } from 'react-native';
+import { StyleSheet, Text, View} from 'react-native';
+import { i18n, Capitalize } from './strings.js';
 
-
-  
-  export class HistoryScreen extends React.Component {
+export default class HistoryScreen extends React.Component {
     static navigationOptions = {
-        title: 'History',
+        title: Capitalize(i18n.t("history")),
     };
     render() {
       return (
         <View style={styles.container}>
-          <Text>History</Text>
+          <Text>{ Capitalize(i18n.t("history")) }</Text>
           
         </View>
       );
     }
-  }
+} 
   
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-  });
+const styles = StyleSheet.create({
+container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+},
+});
   
