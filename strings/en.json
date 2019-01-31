@@ -14,6 +14,12 @@
     "rules_punishment_title":"Zeitspiel, gefährliches Spiel oder unsportliches Verhalten",
     "rules_punishment_text": "Beim ersten Mal im Spiel -> Mannschaftsverwarnung; beim zweiten Mal -> 10 Strafpunkte; beim dritten Mal Disqualifikation, der Gegner gewinnt 30:0.",
     "rules_points_title":"Points",
-    "rules_points_text": "1 Punkt: Kasten berühren \n2 Punkte: Rolle über 16er Matte \n3 Punkte: Durch den Reifen \n4 Punkte: Überspringen eines Böcklis \n5 Punkte Unterkriechen der Langbank \nVerdoppelung aller Punkte beim Drücken eines Buzzers."
-
+    "rules_points_text": "1 Punkt: Kasten berühren \n2 Punkte: Rolle über 16er Matte \n3 Punkte: Durch den Reifen \n4 Punkte: Überspringen eines Böcklis \n5 Punkte Unterkriechen der Langbank \nVerdoppelung aller Punkte beim Drücken eines Buzzers.",
+    "cancel": "Cancel",
+    "ok": "OK",
+    "backToGame": "Back to the game",
+    "restartGame": "Restart game",
+    "cancelGame": "Cancel game",
+    "firstTeamPlaceholder": "starting team",
+    "secondTeamPlaceholder": "second team"
 }
