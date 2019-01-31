@@ -16,7 +16,6 @@ class MenuButton extends Component {
 MenuButton.propTypes = {
 	text: PropTypes.string.isRequired,
 	onPress: PropTypes.func.isRequired,
-	customStyle: PropTypes.oneOfType(StyleSheet),
 };
 
 const styles = StyleSheet.create({

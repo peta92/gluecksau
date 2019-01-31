@@ -14,7 +14,7 @@
     "splash": {
       "image": "./assets/lucky_pig_icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "faeff1"
+      "backgroundColor": "#faeff1"
     },
     "updates": {
       "fallbackToCacheTimeout": 0

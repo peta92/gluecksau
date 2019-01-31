@@ -4,7 +4,7 @@ import HomeScreen from './ScreenHome';
 import RulesScreen from './ScreenRules';
 import HistoryScreen from './ScreenHistory';
 import PlayScreen from './ScreenPlay';
-import './strings.js';
+import './strings';
 
 const MainNavigator = createStackNavigator({
   Home: {screen: HomeScreen},
