@@ -1,8 +1,11 @@
-import React, { Component } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
-import GameControlButton from './GameControlButton';
-import ImageSources from '../ImageSources'
-import Colors from '../color';
+import React, { Component } from 'react'
+import { View, StyleSheet, Text } from 'react-native'
+import GameControlButton from './GameControlButton'
+import Colors from '../color'
+import PlayIcon from '../assets/drawable/play.svg'
+import PauseIcon from '../assets/drawable/pause.svg'
+import UndoIcon from '../assets/drawable/undo.svg'
+import StopIcon from '../assets/drawable/stop.svg'
 
 class GameControlBoard extends Component {
 
@@ -17,12 +20,12 @@ class GameControlBoard extends Component {
     renderPlayPauseButton() {
         if(this.props.gameStarted == false || this.props.gamePaused == true) {
             return (
-                <GameControlButton source={ ImageSources.playIcon.uri} onPress={this.props.onPlayPauseClick}/>
+                <GameControlButton icon={(<PlayIcon width={"100%"} height={"100%"} />)} onPress={this.props.onPlayPauseClick}/>
             );
         }
 
         return (
-            <GameControlButton source={ ImageSources.pauseIcon.uri} onPress={this.props.onPlayPauseClick} />
+            <GameControlButton icon={(<PauseIcon width={"100%"} height={"100%"} />)} onPress={this.props.onPlayPauseClick} />
         );
     }
 
@@ -30,7 +33,7 @@ class GameControlBoard extends Component {
         isStarted = this.props.gameStarted != false;
   
         return (                
-            <GameControlButton style={!isStarted ? styles.invisibleStyle:styles.visibleStyle} source={ ImageSources.undoLastIcon.uri} onPress={this.props.onUndoClick} />
+            <GameControlButton style={!isStarted ? customStyles.invisibleStyle:customStyles.visibleStyle} icon={(<UndoIcon width={"100%"} height={"100%"} />)} onPress={this.props.onUndoClick} />
         )       
     }
 
@@ -38,26 +41,33 @@ class GameControlBoard extends Component {
         isStarted = this.props.gameStarted != false;
   
         return (                
-            <GameControlButton style={!isStarted ? styles.invisibleStyle:styles.visibleStyle} source={ ImageSources.stopIcon.uri} onPress={this.props.onStopClick} />
+            <GameControlButton style={!isStarted ? customStyles.invisibleStyle:customStyles.visibleStyle} icon={(<StopIcon width={"100%"} height={"100%"} />)} onPress={this.props.onStopClick} />
         )       
     }
 
 	render() {
 		return (
-            <View style={styles.root}>
-                <Text>{this.props.current}</Text>
+            <View style={customStyles.root}>
+            <View style={customStyles.textContainer}>
+                <Text style={customStyles.text}>Lauf</Text>
+                <Text style={customStyles.text}>{this.props.current}</Text>
+            </View>
                 {this.renderUndoButton()}
                 {this.renderPlayPauseButton()}
                 {this.renderStopButton()}
-                <Text>{this.props.total}</Text>
+                <View style={customStyles.textContainer}>
+                <Text style={customStyles.text}>Total</Text>
+                <Text style={customStyles.text}>{this.props.total}</Text>
+            </View>
           </View> 
 		);
 	}
 }
 
-const styles = StyleSheet.create({
+const customStyles = StyleSheet.create({
     root: {
-        flex: 1,
+        width: "100%",
+        height: "100%",
         flexDirection:"row",
         flexWrap: "wrap",
         padding: 10,
@@ -65,6 +75,17 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    textContainer: {
+        flex:1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    text: {
+
+        textAlign: 'center',
+        color: "white",
+        fontWeight: 'bold',
     },
     visibleStyle: {
 

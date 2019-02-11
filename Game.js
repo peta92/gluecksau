@@ -54,7 +54,6 @@ export default class Game {
         this.current = 0;
         this.total = 0; 
 
-
         this.runHistory = [];
         this.totalHistory = [];
 
@@ -109,5 +108,18 @@ export default class Game {
 
     getTotal() {
         return this.total;
+    }
+
+    exportGameData() {
+        history = []
+        for ([_, gameElement] of Object.entries(Game.elements)) {
+            elements = this.totalHistory.filter(element => {
+                return element.name === gameElement.name
+            })
+
+            history.push({[gameElement.name]: elements.length})
+        }
+
+        return { "total_points": this.total, "history": history }
     }
 }

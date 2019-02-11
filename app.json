@@ -10,9 +10,9 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/lucky_pig_icon.png",
+    "icon": "./assets/app_icon.png",
     "splash": {
-      "image": "./assets/lucky_pig_icon.png",
+      "image": "./assets/app_icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#faeff1"
     },
@@ -25,5 +25,8 @@
     "ios": {
       "supportsTablet": true
     }
+  },
+  "packagerOpts": {
+    "config": "rn-cli.config.js"
   }
 }

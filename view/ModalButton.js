@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
-import {Text, TouchableOpacity, StyleSheet} from 'react-native';
-import PropTypes from 'prop-types';
-import Colors from '../color';
+import React, {Component} from 'react'
+import {Text, TouchableOpacity, StyleSheet} from 'react-native'
+import PropTypes from 'prop-types'
+import Colors from '../color'
 
 
 export default class ModalButton extends Component {
@@ -11,7 +11,6 @@ export default class ModalButton extends Component {
         onPress={this.props.onPress}>
             <Text style={customStyles.buttonText}>{this.props.btnText}</Text>
         </TouchableOpacity>
-     
     ); 
   }
 }
@@ -19,13 +18,13 @@ export default class ModalButton extends Component {
 ModalButton.propTypes = {
   styles: PropTypes.object,
   onPress: PropTypes.func.isRequired,
+  btnText: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired
 }
 
 const customStyles = new StyleSheet.create({
     button: {
       backgroundColor: 'white',
       padding: 12,
-      marginTop: 16,
       justifyContent: 'center',
       alignItems: 'center',
       borderRadius: 40,

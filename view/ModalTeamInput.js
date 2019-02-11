@@ -30,7 +30,7 @@ export default class ModalTeamInput extends Component {
     
   render() {
     return (
-        <View style={customStyles.modalContainer}>
+        <View style={[customStyles.modalContainer, {width: this.props.width, height: this.props.height}]}>
             <TextInput 
                 returnKeyType = { "next" }
                 onSubmitEditing={() => { this.secondTextInput.focus(); }}
@@ -50,7 +50,9 @@ export default class ModalTeamInput extends Component {
 }
 
 ModalTeamInput.propTypes = {
-  onLastSubmitEditing: PropTypes.func.isRequired
+  onLastSubmitEditing: PropTypes.func.isRequired,
+  width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
 }
 
 const customStyles = new StyleSheet.create({
@@ -63,10 +65,7 @@ const customStyles = new StyleSheet.create({
 
     },
     modalContainer: {
-        justifyContent:"center",
+        justifyContent:"flex-start",
         alignItems:"center",
-        width: "100%",
-        height:"100%"
-
     }
 });

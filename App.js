@@ -11,6 +11,9 @@ const MainNavigator = createStackNavigator({
   Play: {screen: PlayScreen},
   Rules: {screen: RulesScreen},
   History: { screen: HistoryScreen },
+}, {
+  headerMode: "none",
+
 });
 
 const AppContainer = createAppContainer(MainNavigator);

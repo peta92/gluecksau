@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
- 
+import Colors from '../color';
+
 export default class Countdown extends Component {
 
     constructor(props) {
@@ -27,7 +28,7 @@ export default class Countdown extends Component {
         displayTime = this.renderDisplayTime(this.props.time)
 
 		return (
-            <View style={[customStyles.root, {width: this.props.width, height: this.props.height}]}>
+            <View style={{width: this.props.width, height: this.props.height}}>
             <View style={customStyles.container}>
                 <Text style={[customStyles.text, customStyles.firstText]}>{displayTime.minutes}</Text>
                 <Text style={[customStyles.text, customStyles.middleText]}>:</Text>
@@ -45,17 +46,12 @@ Countdown.propTypes = {
 }
 
 const customStyles = StyleSheet.create({
-    root: {
-        // width and height will be set over props
-        flexWrap: "wrap",
-        justifyContent:"center", 
-        alignItems: "center"
-
-    },
     container: {
         width: "100%",
-        height: "100%", 
+        aspectRatio: 1,
         padding: 5,
+        borderWidth:2,
+        borderColor: Colors.darkPink,
         borderRadius: 100/2,
         backgroundColor: 'white',
         flexDirection: "row",
@@ -63,7 +59,8 @@ const customStyles = StyleSheet.create({
         alignItems: "center"
     },
     text: {
-
+        color: Colors.darkPink,
+        fontWeight:"bold"
     },
     firstText: {
 

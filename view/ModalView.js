@@ -21,11 +21,11 @@ export default class ModalView extends Component {
 
     return (<View style={customStyles.buttonContainer}>
 
-      <ModalButton style={customStyles.stdButton} 
+      <ModalButton styles={customStyles.stdButton} 
       onPress={this.props.onCancelBtnPress} 
       btnText={this.props.cancelBtnText}
       />
-      <ModalButton style={customStyles.stdButton} 
+      <ModalButton styles={customStyles.stdButton} 
       onPress={this.props.onOkBtnPress} 
       btnText={this.props.okBtnText}
       />
@@ -72,21 +72,22 @@ const customStyles = new StyleSheet.create({
       width: "100%",
       height: "40%",
       backgroundColor: Colors.darkPink,
-      padding: 22,
+      padding: 20,
       justifyContent: 'center',
       alignItems: 'center',
       borderRadius: 20,
       borderColor: 'rgba(0, 0, 0, 0.1)',
     },
     buttonContainer: {
-      height: "30%",
-      width: "100%",
-      alignItems: 'center',
+      flex: 1,
+      marginBottom: -10,
       flexDirection: 'row',
-      justifyContent: 'flex-end',
+      alignSelf:"stretch",
+      flexWrap: "wrap", 
+      alignItems: 'flex-end',
+      justifyContent: 'center',
     },
     stdButton: {
-      width:"50%", 
-      height:"100%"
+      flex:1,
     }
 });
