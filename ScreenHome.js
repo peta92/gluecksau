@@ -13,17 +13,23 @@ export default class HomeScreen extends React.Component {
         const navigating = this.props.navigation.navigate;
         return ( 
         <View style={styles.rootView}>
-        <View style={[styles.container_horizontal, {justifyContent: "space-between"}]}>
-            <Image source={ImageSources.leueSpel.uri} style={customStyle.mainImage}/>
- 
-            <Image source={ImageSources.luckyPig.uri} style={customStyle.mainImage}/>
+        <View style={customStyle.leueSpelImage}>
+            <Image source={ImageSources.leueSpel.uri} style={styles.fitParentImage} resizeMode='contain'/>
         </View>
-        <MenuButton text={i18n.t("countPoints")} onPress={() => navigating('Play')} customStyle={customStyle.menu_button} />
+        <View style={customStyle.mainImage}>
+            <Image source={ImageSources.luckyPig.uri} style={styles.fitParentImage} resizeMode="contain"/>
+        </View>
+        
+        <View style={customStyle.btnContainer}>
+        <MenuButton imgSource={ImageSources.homePlayBtn.uri} onPress={() => navigating('Play')} customStyle={customStyle.menu_button} />
 
-        <View style={[styles.container_horizontal, {justifyContent: "space-between"}]}>
-            <MenuButton text={i18n.t("rules")} onPress={() => navigating('Rules')} customStyle={customStyle.menu_button} />
-            <MenuButton text={i18n.t("history")} onPress={() => navigating('History')} customStyle={customStyle.menu_button} />
+        
         </View>
+        <View style={customStyle.twoBtnContainer}>
+            <MenuButton imgSource={ImageSources.homeRulesBtn.uri} onPress={() => navigating('Rules')} customStyle={[customStyle.menu_button, {marginRight: 10}]} />
+            <MenuButton imgSource={ImageSources.homeHistoryBtn.uri} onPress={() => navigating('History')} customStyle={customStyle.menu_button} />
+        </View>
+        
         </View>
         );
     } 
@@ -31,12 +37,40 @@ export default class HomeScreen extends React.Component {
   
   const customStyle = StyleSheet.create({
     menu_button: {
-        width: "40%",
-        margin: 5,
+        width: "50%",
+        aspectRatio: 1.41,
+    },
+    leueSpelImage: {
+        position:"absolute",
+        top: "5%",
+        left: "5%",
+        height: "10%",
+        aspectRatio: 1.16,
     },
     mainImage: {
-        resizeMode:"center",
-        width: 193,
-        height: 110
+        position:"absolute",
+        top: "5%",
+        left: "30%",
+        height: "35%",
+        aspectRatio: 0.88,
+    },
+    btnContainer: {
+        position: "absolute",
+        top: "45%",
+        left: 20,
+        height: "25%",
+        width: "100%",
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    twoBtnContainer: {
+        position: "absolute",
+        top: "75%",
+        left: 15,
+        height: "25%",
+        width: "100%",
+        justifyContent: "space-between",
+        alignItems: 'center',
+        flexDirection: 'row',
     }
   });

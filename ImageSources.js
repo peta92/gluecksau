@@ -2,8 +2,29 @@ const ImageSources = {
     luckyPig: {
         uri: require('./assets/lucky_pig_icon.png')
     },
+    homeHistoryBtn: {
+        uri: {
+            default: require('./assets/drawable/home_menubtn_history.png'),
+            pressed: require('./assets/drawable/home_menubtn_history_pressed.png')
+        }
+    },
+    homeRulesBtn: {
+        uri: {
+            default: require('./assets/drawable/home_menubtn_rules.png'),
+            pressed: require('./assets/drawable/home_menubtn_rules_pressed.png')
+        }
+    },
+    homePlayBtn: {
+        uri: {
+            default: require('./assets/drawable/home_menubtn_new_game.png'),
+            pressed: require('./assets/drawable/home_menubtn_new_game_pressed.png')
+        }
+    },
     rulesPig: {
         uri: require('./assets/drawable/rules_pig.png')
+    },
+    exit: {
+        uri: require('./assets/drawable/exit.png')
     },
     leueSpel: {
         uri: require('./assets/drawable/leuespel.png')
@@ -31,18 +52,6 @@ const ImageSources = {
     },
     longBench: {
         uri: require('./assets/drawable/long_bench.png')
-    },
-    playIcon: {
-        uri: require('./assets/drawable/play.svg')
-    },
-    pauseIcon: {
-        uri: require('./assets/drawable/pause.svg') 
-    },
-    undoLastIcon: {
-        uri: require('./assets/drawable/undo.svg') 
-    },
-    stopIcon: {
-        uri: require('./assets/drawable/stop.svg')
     }
 };
 
