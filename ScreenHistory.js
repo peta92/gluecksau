@@ -1,45 +1,81 @@
-import React, { Component } from 'react';
-import { Text, TouchableOpacity, StyleSheet, View } from 'react-native';
-import { i18n, Capitalize } from './strings';
+import React, { Component } from 'react'
+import { StyleSheet, View } from 'react-native'
+import { i18n, Capitalize } from './strings'
+import styles from './styles'
+import LocalStorage from './LocalStorage'
+import {FlatList } from 'react-native-gesture-handler';
+import ScreenHeader from './view/ScreenHeader';
+import HistoryListEntry from './view/HistoryListEntry';
 
 export default class HistoryScreen extends Component {
   static navigationOptions = {
     title: Capitalize(i18n.t("history")),
   };
 
+  constructor(props) {
+    super(props)
+
+    this._isMounted = false
+
+    this.state = { 
+      histories: [],
+    } 
+
+    this.getAllGameHistories = this.getAllGameHistories.bind(this)
+  }
+
+  componentWillMount() {
+    this._isMounted = true
+  }
+  componentWillUnmount() {
+    this._isMounted = false
+  }
+
+  getAllGameHistories() {
+      LocalStorage.retrieveAll().then(receivedHistories => {
+        if(!this._isMounted) {
+          return
+        }
+        receivedHistories.sort((a, b) => {
+          // We want the newest one on the top -> reverse sort
+          return b.timestamp - a.timestamp;
+        });
+        this.setState({histories: receivedHistories})
+      })
+  }
+
   render() {
+    this.getAllGameHistories()
     return (
-      <View></View>
+      <View style={[styles.rootView, {paddingBottom: 0, paddingRight: 0}]}>
+        <ScreenHeader 
+          styles={customStyles.headerContainer} 
+          headerText={Capitalize(i18n.t("history"))}
+          onPress={() => this.props.navigation.navigate("Home")}/>
+
+        <FlatList 
+        style={customStyles.list}
+        data={this.state.histories}
+        keyExtractor={item => ""+item.timestamp}
+        ItemSeparatorComponent={() => <View style={{margin: 12}}/>}
+        renderItem={({item}) => {return(<HistoryListEntry item={item} />)}}/>
+      </View>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
+const customStyles = StyleSheet.create({
+  list: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: "100%",
+    paddingRight: 20
   },
-  button: {
-    backgroundColor: 'lightblue',
-    padding: 12,
-    margin: 16,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 4,
-    borderColor: 'rgba(0, 0, 0, 0.1)',
-  },
-  modalContent: {
-    backgroundColor: 'white',
-    padding: 22,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 4,
-    borderColor: 'rgba(0, 0, 0, 0.1)',
-  },
-  bottomModal: {
-    justifyContent: 'flex-end',
-    margin: 0,
+  headerContainer: {
+    width: "100%",
+    height: "20%",
+    paddingRight: 20,
+    marginBottom: "5%",
+    marginTop: "5%"
   },
 });
   
