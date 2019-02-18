@@ -67,7 +67,7 @@ class GameControlBoard extends Component {
 const customStyles = StyleSheet.create({
     root: {
         width: "100%",
-        height: "100%",
+        height: "10%",
         flexDirection:"row",
         flexWrap: "wrap",
         padding: 10,

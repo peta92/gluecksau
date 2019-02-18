@@ -1,10 +1,10 @@
-import React from 'react';
-import {createStackNavigator, createAppContainer } from 'react-navigation';
-import HomeScreen from './ScreenHome';
-import RulesScreen from './ScreenRules';
-import HistoryScreen from './ScreenHistory';
-import PlayScreen from './ScreenPlay';
-import './strings';
+import React from 'react'
+import {createStackNavigator, createAppContainer } from 'react-navigation'
+import HomeScreen from './ScreenHome'
+import RulesScreen from './ScreenRules'
+import HistoryScreen from './ScreenHistory'
+import PlayScreen from './ScreenPlay'
+import './strings'
 
 const MainNavigator = createStackNavigator({
   Home: {screen: HomeScreen},
@@ -14,12 +14,12 @@ const MainNavigator = createStackNavigator({
 }, {
   headerMode: "none",
 
-});
+})
 
-const AppContainer = createAppContainer(MainNavigator);
+const AppContainer = createAppContainer(MainNavigator)
 
 export default class App extends React.Component {
   render() {
-    return <AppContainer />;
+    return <AppContainer />
   }
 }

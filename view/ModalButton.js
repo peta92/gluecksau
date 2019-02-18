@@ -27,7 +27,7 @@ const customStyles = new StyleSheet.create({
       padding: 12,
       justifyContent: 'center',
       alignItems: 'center',
-      borderRadius: 40,
+      borderRadius: 50,
       borderColor: 'rgba(0, 0, 0, 0.1)',
     },
     buttonText: {

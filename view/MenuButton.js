@@ -27,6 +27,7 @@ class MenuButton extends Component {
 				<Image 
 				source={!this.state.pressed ? imgSource.default: imgSource.pressed} 
 				style={[styles.fitParentImage]} 
+				fadeDuration={0}
 				resizeMode="contain"/>
 
 		  </TouchableOpacity>

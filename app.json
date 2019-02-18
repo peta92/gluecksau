@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Gluecksau",
-    "slug": "Gluecksau",
+    "slug": "gluecksau",
     "privacy": "public",
     "sdkVersion": "32.0.0",
     "platforms": [
@@ -23,8 +23,14 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.bearpeta.gluecksau"
+    },
+    "android": {
+      "package": "com.bearpeta.gluecksau",
+      "permissions": ["WAKE_LOCK"]
     }
+    
   },
   "packagerOpts": {
     "config": "rn-cli.config.js"

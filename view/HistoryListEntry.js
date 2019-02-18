@@ -11,7 +11,7 @@ export default class HistoryListEntry extends Component {
 		return (
             <View style={customStyles.container}>
                 <View style={[styles.container_horizontal, customStyles.dateContainer]}>
-                <Text style={customStyles.dateText}>{moment(item.timestamp).format("DD.MM.YYYY HH:mm:ss")}</Text>
+                <Text style={customStyles.dateText}>{moment(item.timestamp).format("DD.MM.YYYY HH:mm")}</Text>
                 </View>
                 <View style={[styles.container_horizontal, {marginBottom: 10, marginTop: 10}]}>
                 <View style={customStyles.entryContainerLeft}>
