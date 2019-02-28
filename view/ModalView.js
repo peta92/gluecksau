@@ -1,12 +1,15 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, Alert} from 'react-native';
+import {View, StyleSheet, Alert, Dimensions} from 'react-native';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
 import Colors from '../color';
 import {i18n} from '../strings';
 import ModalButton from './ModalButton';
 
-
+dimens = {
+  width: Dimensions.get('window').width,
+  height: Dimensions.get('window').height
+  }
 export default class ModalView extends Component {
 
   constructor(props) {
@@ -25,6 +28,7 @@ export default class ModalView extends Component {
       onPress={this.props.onCancelBtnPress} 
       btnText={this.props.cancelBtnText}
       />
+      <View style={{width: "5%"}} />
       <ModalButton styles={customStyles.stdButton} 
       onPress={this.props.onOkBtnPress} 
       btnText={this.props.okBtnText}
@@ -35,15 +39,14 @@ export default class ModalView extends Component {
   render() {
     return (
       <Modal isVisible={this.props.isVisible}>
+        <View style={customStyles.modalContent}>
+            
+          {this.props.contentView}
 
-          <View style={customStyles.modalContent}>
-    
-            {this.props.contentView}
-
-            {this.showModalButtons()}
-          </View>
+          {this.showModalButtons()}
+        </View>
+          
       </Modal>
-     
     ); 
   }
 }
@@ -62,7 +65,7 @@ ModalView.propTypes = {
   isVisible: PropTypes.bool.isRequired,
   contentView: PropTypes.element,
   onCancelBtnPress: PropTypes.func,
-  onOkBtnPress: PropTypes.func,
+  onOkBtnPress: PropTypes.func,   
   cancelBtnText: PropTypes.string,
   okBtnText: PropTypes.string,
 }
@@ -70,24 +73,26 @@ ModalView.propTypes = {
 const customStyles = new StyleSheet.create({
     modalContent: {
       width: "100%",
-      height: "40%",
-      backgroundColor: Colors.darkPink,
+      height: dimens.height*0.55,
+      backgroundColor: Colors.darkPink, 
       padding: 20,
-      justifyContent: 'center',
+      justifyContent: 'space-between',
       alignItems: 'center',
       borderRadius: 20,
       borderColor: 'rgba(0, 0, 0, 0.1)',
     },
     buttonContainer: {
-      flex: 1,
+      width:"100%",
+      height: "30%",
       marginBottom: -10,
+      padding: 15,
       flexDirection: 'row',
-      alignSelf:"stretch",
-      flexWrap: "wrap", 
-      alignItems: 'flex-end',
-      justifyContent: 'center',
+      flexWrap: "wrap",      
+      justifyContent: 'space-between',
     },
     stdButton: {
-      flex:1,
+      width:"45%",
+      height: "100%",
+
     }
 });

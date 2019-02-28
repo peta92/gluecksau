@@ -1,5 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, Alert, StatusBar } from 'react-native'
+import { secInMinutes } from './utils'
 import { i18n } from './strings'
 import styles from './styles'
 import ImageSources  from './ImageSources'
@@ -13,10 +14,11 @@ import Countdown from './view/Countdown'
 import ModalButton from './view/ModalButton';
 import LocalStorage from './LocalStorage';
 import GameHistory from './GameHistory';
+import ModalTimeSet from './view/ModalTimeSet';
 
-const gameDuration = 5 // 4 minutes
-const FIRST_TEAM = 1
-const SECOND_TEAM = 2
+const gameDuration = 240 // 4 minutes
+const FIRST_TEAM = 1 // To identify if the first team is playing
+const SECOND_TEAM = 2 // To identify if the second team is playing
 
 export default class PlayScreen extends React.Component {
     static navigationOptions = {
@@ -35,11 +37,16 @@ export default class PlayScreen extends React.Component {
             gamePaused: false,
             gameStopped: false,
             teamInputVisible: true, // when the game starts they team names have to be
+            onCountdownPressed: false, // if true the "change game time" modal will be shown if the game isn't started yet
         }  
 
         this.game = new Game()
 
-        this.playingTeam = FIRST_TEAM;
+        // This variable holds the position of the last clicked element, so it can be ensured that the same element isn't clicked multiple times in a row
+        this.lastClickedPosition = 0
+
+        // The first team entered always starts the game 
+        this.playingTeam = FIRST_TEAM
 
         this.onDelete = this.onDelete.bind(this)
         this.onSave = this.onSave.bind(this)
@@ -64,8 +71,6 @@ export default class PlayScreen extends React.Component {
             if(this.state.timerInSec == 0) {
                 clearInterval(this.clockCall)
                 this.onTeamFinished()
-
-                // TODO: Save game and start new one for second team or finish completely
                 return
             }
             this.setState({timerInSec: this.state.timerInSec - 1})
@@ -103,10 +108,7 @@ export default class PlayScreen extends React.Component {
                     LocalStorage.delete(tempOneKey)
                     this.props.navigation.navigate("Home")
                 })
-                
-
             })
-            
         }
     }
 
@@ -116,12 +118,18 @@ export default class PlayScreen extends React.Component {
      * Excepted elements are "delete run points" and "save run points". 
      * These elements have separate called methods -> see onDelete() and onSave()
      */
-    onElementClick(elementName) {
+    onElementClick(elementName, position) {
         if(this.state.gamePaused || !this.state.gameStarted) {
             Alert.alert("GAME IS NOT RUNNING")
             return
         }
 
+        // The same element on the same position (some element exists twice therefore we need the position) can just be clicked once in a row. Otherwise it doesn't count
+        if(this.lastClickedPosition != 0 && this.lastClickedPosition == position) {
+            return
+        }
+
+        this.lastClickedPosition = position 
         this.game.addPoints(elementName)
         current = this.game.getCurrent()
         this.setState({current: current}) 
@@ -218,7 +226,7 @@ export default class PlayScreen extends React.Component {
             contentView = (
                 <ModalTeamInput ref={ref => (this.teamInputView = ref)} 
                 width={"100%"}
-                height={"70%"}
+                height={"60%"}
                 onLastSubmitEditing={() => {
                     firstTeam = this.teamInputView.getInput(ModalTeamInput.FIRST_TEAM)
                     secondTeam = this.teamInputView.getInput(ModalTeamInput.SECOND_TEAM)
@@ -245,21 +253,62 @@ export default class PlayScreen extends React.Component {
             }}
             />
         )
-    }
+    } 
 
+    /**
+     * The modal will be visible when the "stop" button on the game control board is clicked
+     */
     showStopModal() {
         const {navigate} = this.props.navigation
 
-        modalView = (
-            <View>
-                <ModalButton styles={{marginBottom: 10}} btnText={i18n.t("restartGame")} onPress={this.restartGame}/>
-                <ModalButton styles={{marginBottom: 10}} btnText={i18n.t("cancelGame")} onPress={() => navigate('Home')}/>
-                <ModalButton btnText={i18n.t("backToGame")} onPress={() => this.setState({gameStopped: false})}/>
+        modalView = ( 
+            <View style={{height: "100%", width: "100%", justifyContent: "space-between", alignItems: "center", paddingTop: 40, paddingBottom: 40}}>
+                <ModalButton styles={{height: "25%", width: "80%", marginBottom: 20}} btnText={i18n.t("restartGame")} onPress={this.restartGame}/>
+                <ModalButton styles={{height: "25%", width: "80%", marginBottom: 20}} btnText={i18n.t("cancelGame")} onPress={() => navigate('Home')}/> 
+                <ModalButton styles={{height: "25%", width: "80%"}} btnText={i18n.t("backToGame")} onPress={() => this.setState({gameStopped: false})}/>
             </View>
         )
 
         return (
             <ModalView isVisible={this.state.gameStopped} contentView={modalView} showButtons={false} />
+        )
+    }
+
+    /**
+     * The modal will be visible when the countdown is clicked and the game is not started yet.
+     * => See state variable "gameStarted"
+     */
+    showChangeCountdownModal() { 
+        time = secInMinutes(this.state.timerInSec)
+
+        modalView = ( 
+            <ModalTimeSet 
+            ref={ref => (this.timeInputView = ref)} 
+            height="60%" 
+            width="100%"
+            minute={time.minutes}
+            seconds={time.seconds}
+            onLastSubmitEditing={() => {
+                minutes = this.timeInputView.getInput(ModalTimeSet.MINUTE)
+                seconds = this.timeInputView.getInput(ModalTimeSet.SECOND)
+
+                inSec = (minutes * 60) + seconds
+                this.setState({onCountdownPressed: false, timerInSec: inSec})
+            }}
+             />
+        )
+
+        return (
+            <ModalView isVisible={this.state.onCountdownPressed} 
+                contentView={modalView} 
+                onCancelBtnPress={() => this.setState({onCountdownPressed: false})} 
+                onOkBtnPress={() => {
+                    minutes = this.timeInputView.getInput(ModalTimeSet.MINUTE)
+                    seconds = this.timeInputView.getInput(ModalTimeSet.SECOND)
+
+                    inSec = (minutes * 60) + seconds
+                    this.setState({onCountdownPressed: false, timerInSec: inSec})
+                }}/>
         )
     }
 
@@ -270,32 +319,38 @@ export default class PlayScreen extends React.Component {
             <StatusBar hidden={true} />
             {this.showTeamInputModal()}  
             {this.showStopModal()}
+            {this.showChangeCountdownModal()}
 
-            <GymnasticElement styles={customStyles.topLeftBuzzer} imageUri={ImageSources.buzzer.uri} onPress={() => this.onElementClick(Game.elements.BUZZER)} />
+            <GymnasticElement styles={customStyles.topLeftBuzzer} imageUri={ImageSources.buzzer.uri} onPress={() => this.onElementClick(Game.elements.BUZZER, 1)} />
 
-            <GymnasticElement styles={customStyles.topRightVaultingBox}  imageUri={ImageSources.vaultingBox.uri} onPress={() => this.onElementClick(Game.elements.VAULTING_BOCK)}/>
+            <GymnasticElement styles={customStyles.topRightVaultingBox}  imageUri={ImageSources.vaultingBox.uri} onPress={() => this.onElementClick(Game.elements.VAULTING_BOCK, 2)}/>
 
             <View style={customStyles.countdown}>
-                <Countdown time={this.state.timerInSec} width={"100%"} height={"100%"}/>
+                <Countdown time={this.state.timerInSec} width={"100%"} height={"100%"} onPress={() => {
+                    if(this.state.gameStarted) {
+                        return
+                    }
+                    this.setState({onCountdownPressed: true})
+                }}/>
             </View>
-            <GymnasticElement styles={customStyles.rings}  imageUri= {ImageSources.rings.uri} onPress={() => this.onElementClick(Game.elements.RINGS)}/>
+            <GymnasticElement styles={customStyles.rings}  imageUri= {ImageSources.rings.uri} onPress={() => this.onElementClick(Game.elements.RINGS, 3)}/>
 
-            <GymnasticElement styles={customStyles.longBench} imageUri= {ImageSources.longBench.uri} onPress={() => this.onElementClick(Game.elements.LONG_BENCH)} />
+            <GymnasticElement styles={customStyles.longBench} imageUri= {ImageSources.longBench.uri} onPress={() => this.onElementClick(Game.elements.LONG_BENCH, 4)} />
 
-            <GymnasticElement styles={customStyles.leftMat} imageUri= {ImageSources.mat.uri}  onPress={() => this.onElementClick(Game.elements.MAT)} />
+            <GymnasticElement styles={customStyles.leftMat} imageUri= {ImageSources.mat.uri}  onPress={() => this.onElementClick(Game.elements.MAT, 5)} />
 
-            <GymnasticElement styles={customStyles.vaultingHorse} imageUri= {ImageSources.vaultingHorse.uri} onPress={() => this.onElementClick(Game.elements.VAULTING_HORSE)} />
+            <GymnasticElement styles={customStyles.vaultingHorse} imageUri= {ImageSources.vaultingHorse.uri} onPress={() => this.onElementClick(Game.elements.VAULTING_HORSE, 6)} />
 
             <GymnasticElement styles={customStyles.savePoints} imageUri={ImageSources.savePoints.uri} onPress={this.onSave} />
 
-            <GymnasticElement styles={customStyles.rightMat} imageUri= {ImageSources.mat.uri} onPress={() => this.onElementClick(Game.elements.MAT)} />
+            <GymnasticElement styles={customStyles.rightMat} imageUri= {ImageSources.mat.uri} onPress={() => this.onElementClick(Game.elements.MAT, 7)} />
 
 
             <GymnasticElement styles={customStyles.deletePoints}  imageUri={ImageSources.deletePoints.uri} onPress={this.onDelete} />
 
-            <GymnasticElement styles={customStyles.bottomVaultingBock} imageUri= {ImageSources.vaultingBox.uri} onPress={() => this.onElementClick(Game.elements.VAULTING_BOCK)}/>
+            <GymnasticElement styles={customStyles.bottomVaultingBock} imageUri= {ImageSources.vaultingBox.uri} onPress={() => this.onElementClick(Game.elements.VAULTING_BOCK, 8)}/>
 
-            <GymnasticElement styles={customStyles.bottomRightBuzzer} imageUri= {ImageSources.buzzer.uri} onPress={() => this.onElementClick(Game.elements.BUZZER)} />
+            <GymnasticElement styles={customStyles.bottomRightBuzzer} imageUri= {ImageSources.buzzer.uri} onPress={() => this.onElementClick(Game.elements.BUZZER, 9)} />
 
             <View style={customStyles.controlBoard}>
                 <GameControlBoard current={this.state.current} total={this.state.total} gameStarted={this.state.gameStarted} gamePaused={this.state.gamePaused} onPlayPauseClick={this.onPlayPauseClick} onStopClick={this.onStop} onUndoClick={this.onUndoClick}/>
@@ -365,7 +420,7 @@ export default class PlayScreen extends React.Component {
     },
     deletePoints: {
         position:"absolute", 
-        bottom: "23%", 
+        bottom: "20%", 
         left:"5%", 
         height: "20%", 
         aspectRatio: 0.77,
@@ -393,11 +448,7 @@ export default class PlayScreen extends React.Component {
         aspectRatio: 1,
     },
     controlBoard: {
-        position:"absolute", 
-        bottom: "5%", 
-        left:"5%", 
-        height: "10%", 
-        width: "100%",
-        flexDirection:"row"
+        flex: 1,
+        justifyContent: 'flex-end',
     }
   })
