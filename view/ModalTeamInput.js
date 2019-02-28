@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {View, TextInput, StyleSheet} from 'react-native';
 import PropTypes from 'prop-types';
 import {i18n} from '../strings'
+import styles from '../styles'
 
 export default class ModalTeamInput extends Component {
     static FIRST_TEAM = "first"
@@ -37,13 +38,13 @@ export default class ModalTeamInput extends Component {
                 onChangeText={text => this.firstInput = text}
                 blurOnSubmit={false} 
                 placeholder={i18n.t("firstTeamPlaceholder")} 
-                style={[customStyles.modalInput, {marginBottom: 30}]}  />
+                style={[customStyles.modalInput, styles.defaultShadow, {marginBottom: 30}]}  />
             <TextInput 
                 ref={input => this.secondTextInput = input} 
                 onChangeText={text => this.secondInput = text}
                 onSubmitEditing={() => this.props.onLastSubmitEditing()}
                 placeholder={i18n.t("secondTeamPlaceholder")} 
-                style={customStyles.modalInput} />
+                style={[customStyles.modalInput, styles.defaultShadow]} />
         </View>
     );
   }
@@ -65,7 +66,7 @@ const customStyles = new StyleSheet.create({
 
     },
     modalContainer: {
-        justifyContent:"flex-start",
+        justifyContent:"flex-end",
         alignItems:"center",
     }
 });

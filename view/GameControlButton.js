@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { View, TouchableHighlight, StyleSheet } from 'react-native';
+import { View, TouchableHighlight, StyleSheet,Dimensions } from 'react-native';
+import styles from '../styles'
 
 class GameControlButton extends Component {
 	render() {
 		return (
-            <View style={[styles.root, this.props.style]} >
-            <TouchableHighlight style={styles.button} onPress={this.props.onPress} underlayColor="red">
+            <View style={[customStyles.root, this.props.style]} >
+            <TouchableHighlight style={[customStyles.button, styles.defaultShadow]} onPress={this.props.onPress} underlayColor="red">
                 {this.props.icon}
           </TouchableHighlight> 
           </View>
@@ -13,9 +14,8 @@ class GameControlButton extends Component {
 	}
 }
 
-const styles = StyleSheet.create({
+const customStyles = StyleSheet.create({
     root: {
-
         flex: 1,
         flexWrap: "wrap",
         justifyContent:"center", 
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     button: {
         height: "100%",
         aspectRatio: 1,
-        borderRadius: 100/2,
+        borderRadius: Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2,
         backgroundColor: 'white',
         flexWrap: "wrap",
         justifyContent:"center", 

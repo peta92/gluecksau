@@ -2,12 +2,12 @@ import React, {Component} from 'react'
 import {Text, TouchableOpacity, StyleSheet} from 'react-native'
 import PropTypes from 'prop-types'
 import Colors from '../color'
-
+import styles from '../styles'
 
 export default class ModalButton extends Component {
   render() {
     return (
-        <TouchableOpacity style={[customStyles.button, this.props.styles]}
+        <TouchableOpacity style={[customStyles.button, styles.defaultShadow, this.props.styles]}
         onPress={this.props.onPress}>
             <Text style={customStyles.buttonText}>{this.props.btnText}</Text>
         </TouchableOpacity>
@@ -29,6 +29,7 @@ const customStyles = new StyleSheet.create({
       alignItems: 'center',
       borderRadius: 50,
       borderColor: 'rgba(0, 0, 0, 0.1)',
+     
     },
     buttonText: {
       color: Colors.darkPink,

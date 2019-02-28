@@ -1,22 +1,22 @@
-import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import PropTypes from 'prop-types';
-import Colors from '../color';
+import React, { Component } from 'react'
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native'
+import PropTypes from 'prop-types'
+import Colors from '../color'
+import { secInMinutes } from '../utils'
 
 export default class Countdown extends Component {
 
     constructor(props) {
         super(props)
 
-        this.renderDisplayTime = this.renderDisplayTime.bind(this)
+        this.renderDisplayTime = this.renderDisplayTime.bind(this) 
     }
 
     renderDisplayTime(time) {
-        minutes = Math.floor(time / 60)
-        seconds = time - (minutes * 60)
+        timeObj = secInMinutes(time)
 
-        minutes = ('0' + minutes).slice(-2)
-        seconds = ('0' + seconds).slice(-2)
+        minutes = ('0' + timeObj.minutes).slice(-2)
+        seconds = ('0' + timeObj.seconds).slice(-2)
 
         return {
             minutes: minutes,
@@ -28,13 +28,13 @@ export default class Countdown extends Component {
         displayTime = this.renderDisplayTime(this.props.time)
 
 		return (
-            <View style={{width: this.props.width, height: this.props.height}}>
+            <TouchableOpacity style={{width: this.props.width, height: this.props.height, activeOpacity: 0}} onPress={this.props.onPress}>
             <View style={customStyles.container}>
                 <Text style={[customStyles.text, customStyles.firstText]}>{displayTime.minutes}</Text>
                 <Text style={[customStyles.text, customStyles.middleText]}>:</Text>
                 <Text style={[customStyles.text, customStyles.lastText]}>{displayTime.seconds}</Text>
             </View>
-            </View> 
+            </TouchableOpacity> 
 		);
 	}
 }
@@ -43,6 +43,7 @@ Countdown.propTypes = {
     time: PropTypes.number.isRequired,
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
     height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+    onPress: PropTypes.func.isRequired
 }
 
 const customStyles = StyleSheet.create({
@@ -52,7 +53,7 @@ const customStyles = StyleSheet.create({
         padding: 5,
         borderWidth:2,
         borderColor: Colors.darkPink,
-        borderRadius: 100/2,
+        borderRadius: Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2,
         backgroundColor: 'white',
         flexDirection: "row",
         justifyContent:"center", 
