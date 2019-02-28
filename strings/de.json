@@ -21,5 +21,7 @@
     "restartGame": "Spiel neustarten",
     "cancelGame": "Spiel abbrechen",
     "firstTeamPlaceholder": "Beginnendes Team",
-    "secondTeamPlaceholder": "Zweites Team"
+    "secondTeamPlaceholder": "Zweites Team",
+    "minutePlaceholder": "Minuten",
+    "secondsPlaceholder": "Sekunden"
 }
