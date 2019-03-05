@@ -9,6 +9,7 @@
   "dependencies": {
     "expo": "^32.0.5",
     "expo-localization": "^2.0.0",
+    "fsevents": "^1.2.7",
     "i18n-js": "^3.2.1",
     "moment": "^2.24.0",
     "prop-types": "^15.7.1",
