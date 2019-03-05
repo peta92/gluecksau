@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, FlatList, Alert, SafeAreaView } from 'react-native'
 import { i18n, Capitalize } from './strings'
 import styles from './styles'
 import LocalStorage from './LocalStorage'
-import {FlatList } from 'react-native-gesture-handler';
 import ScreenHeader from './view/ScreenHeader';
 import HistoryListEntry from './view/HistoryListEntry';
 
@@ -28,25 +27,28 @@ export default class HistoryScreen extends Component {
     this._isMounted = true
   }
   componentWillUnmount() {
-    this._isMounted = false
+    this._isMounted = false 
   }
-
+ 
   getAllGameHistories() {
       LocalStorage.retrieveAll().then(receivedHistories => {
-        if(!this._isMounted) {
+        if(!this._isMounted || receivedHistories == undefined || receivedHistories == null) {
           return
         }
         receivedHistories.sort((a, b) => {
           // We want the newest one on the top -> reverse sort
           return b.timestamp - a.timestamp;
         });
+
         this.setState({histories: receivedHistories})
-      })
+      }).catch()
   }
 
   render() {
     this.getAllGameHistories()
     return (
+      <SafeAreaView style={styles.safeAreaView}>
+
       <View style={[styles.rootView, {paddingBottom: 0, paddingRight: 0}]}>
         <ScreenHeader 
           styles={customStyles.headerContainer} 
@@ -60,6 +62,7 @@ export default class HistoryScreen extends Component {
         ItemSeparatorComponent={() => <View style={{margin: 12}}/>}
         renderItem={({item}) => {return(<HistoryListEntry item={item} />)}}/>
       </View>
+      </SafeAreaView>
     );
   }
 }

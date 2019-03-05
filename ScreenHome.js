@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View, Image, SafeAreaView } from 'react-native';
 import { i18n } from './strings';
 import styles from './styles';
 import  ImageSources  from './ImageSources';
@@ -12,25 +12,26 @@ export default class HomeScreen extends React.Component {
     render() {
         const navigating = this.props.navigation.navigate;
         return ( 
-        <View style={styles.rootView}>
-        <View style={customStyle.leueSpelImage}>
-            <Image source={ImageSources.leueSpel.uri} style={styles.fitParentImage} resizeMode='contain'/>
-        </View>
-        <View style={customStyle.mainImage}>
-            <Image source={ImageSources.luckyPig.uri} style={styles.fitParentImage} resizeMode="contain"/>
-        </View>
-        
-        <View style={customStyle.btnContainer}>
-        <MenuButton imgSource={ImageSources.homePlayBtn.uri} onPress={() => navigating('Play')} customStyle={customStyle.menu_button} />
+        <SafeAreaView style={styles.safeAreaView}>
 
+        <View style={styles.rootView}>
+            <View style={customStyle.leueSpelImage}>
+                <Image source={ImageSources.leueSpel.uri} style={styles.fitParentImage} resizeMode='contain'/>
+            </View>
+            <View style={customStyle.mainImage}>
+                <Image source={ImageSources.luckyPig.uri} style={styles.fitParentImage} resizeMode="contain"/>
+            </View>
         
+            <View style={customStyle.btnContainer}>
+                <MenuButton imgSource={ImageSources.homePlayBtn.uri} onPress={() => navigating('Play')} customStyle={customStyle.menu_button} />
+            
+            </View>
+            <View style={customStyle.twoBtnContainer}>
+                <MenuButton imgSource={ImageSources.homeRulesBtn.uri} onPress={() => navigating('Rules')} customStyle={[customStyle.menu_button, {marginRight: 10}]} />
+                <MenuButton imgSource={ImageSources.homeHistoryBtn.uri} onPress={() => navigating('History')} customStyle={customStyle.menu_button} />
+            </View>
         </View>
-        <View style={customStyle.twoBtnContainer}>
-            <MenuButton imgSource={ImageSources.homeRulesBtn.uri} onPress={() => navigating('Rules')} customStyle={[customStyle.menu_button, {marginRight: 10}]} />
-            <MenuButton imgSource={ImageSources.homeHistoryBtn.uri} onPress={() => navigating('History')} customStyle={customStyle.menu_button} />
-        </View>
-        
-        </View>
+        </SafeAreaView>
         );
     } 
 }  
