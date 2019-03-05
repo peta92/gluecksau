@@ -17,13 +17,14 @@ function findValidElement(element) {
 
 function findBestRun(histories) {
     highestTotalPoints = 0
-    for(history in histories) {
+    for(history of histories) {
         if(history.run_points == undefined || history.run_points == null || history.run_points <= highestTotalPoints) {
             continue
         }
 
         highestTotalPoints = history.run_points
     }
+    return highestTotalPoints
 }
 
 export default class Game {
