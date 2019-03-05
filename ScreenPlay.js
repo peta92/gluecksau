@@ -1,5 +1,6 @@
 import React from 'react'
-import { StyleSheet, View, Alert, StatusBar } from 'react-native'
+import { StyleSheet, View, Alert, StatusBar, SafeAreaView } from 'react-native'
+import { KeepAwake } from 'expo'
 import { secInMinutes } from './utils'
 import { i18n } from './strings'
 import styles from './styles'
@@ -8,15 +9,15 @@ import GymnasticElement from './view/GymnasticElement'
 import GameControlBoard from './view/GameControlBoard'
 import Game from './Game'  
 import ModalView from './view/ModalView'
-import { KeepAwake } from 'expo'
 import ModalTeamInput from './view/ModalTeamInput'
 import Countdown from './view/Countdown'
-import ModalButton from './view/ModalButton';
-import LocalStorage from './LocalStorage';
-import GameHistory from './GameHistory';
-import ModalTimeSet from './view/ModalTimeSet';
+import ModalButton from './view/ModalButton'
+import LocalStorage from './LocalStorage'
+import GameHistory from './GameHistory'
+import ModalTimeSet from './view/ModalTimeSet'
+import { roundedCorner } from './styles/base'
 
-const gameDuration = 240 // 4 minutes
+gameDuration = 240 // 4 minutes
 const FIRST_TEAM = 1 // To identify if the first team is playing
 const SECOND_TEAM = 2 // To identify if the second team is playing
 
@@ -93,7 +94,7 @@ export default class PlayScreen extends React.Component {
             this.restartGame()
             this.playingTeam = SECOND_TEAM
             // Nice animation for showing that it is the turn of the second team
-            Alert.alert("Second team's turn")
+            Alert.alert(i18n.t("alert_title_first_team_finished"), i18n.t("alert_text_first_team_finished"))
             return;
         }
 
@@ -106,9 +107,27 @@ export default class PlayScreen extends React.Component {
                 
                 LocalStorage.saveObject(""+gameData.timestamp, gameData).then(() => {
                     LocalStorage.delete(tempOneKey)
-                    this.props.navigation.navigate("Home")
+
+                    // If there rare case becomes true that the total points and also the best run points we have to show a special alert
+                    if(teamOneGameData.total_points == teamTwoGameData.total_points && teamOneGameData.best_run_points == teamTwoGameData.best_run_points) {
+                        Alert.alert(i18n.t("alert_title_no_one_won"), i18n.t("alert_text_no_one_won"),
+                        [{text: 'OK', onPress: () => this.props.navigation.navigate("Home")}])
+                        return
+                    }
+
+                    winner = ""
+                    alertMessage = ""
+                    if(teamOneGameData.total_points != teamTwoGameData.total_points) {
+                        winner = teamOneGameData.total_points > teamTwoGameData.total_points ? this.state.teamOneName : this.state.teamTwoName
+                        alertMessage = i18n.t("alert_text_won_by_total")
+                    } else {
+                        winner = teamOneGameData.best_run_points > teamTwoGameData.best_run_points ? this.state.teamOneName : this.state.teamTwoName
+                        alertMessage = i18n.t("alert_text_won_by_best_run")
+                    }
+                    Alert.alert(winner + i18n.t("alert_title_won"), alertMessage,
+                    [{text: 'OK', onPress: () => this.props.navigation.navigate("Home")}])       
                 })
-            })
+            }).catch(error => console.log(error.message))
         }
     }
 
@@ -120,7 +139,7 @@ export default class PlayScreen extends React.Component {
      */
     onElementClick(elementName, position) {
         if(this.state.gamePaused || !this.state.gameStarted) {
-            Alert.alert("GAME IS NOT RUNNING")
+            Alert.alert(i18n.t("alert_title_game_is_not_running"), i18n.t("alert_text_game_is_not_running"))
             return
         }
 
@@ -141,7 +160,7 @@ export default class PlayScreen extends React.Component {
      */
     onDelete() {
         if(this.state.gamePaused || !this.state.gameStarted) {
-            Alert.alert("GAME IS PAUSED")
+            Alert.alert(i18n.t("alert_title_game_is_not_running"), i18n.t("alert_text_game_is_not_running"))
             return
         }
 
@@ -155,7 +174,7 @@ export default class PlayScreen extends React.Component {
      */
     onSave() {
         if(this.state.gamePaused || !this.state.gameStarted) {
-            Alert.alert("GAME IS PAUSED")
+            Alert.alert(i18n.t("alert_title_game_is_not_running"), i18n.t("alert_text_game_is_not_running"))
             return
         }
 
@@ -206,7 +225,8 @@ export default class PlayScreen extends React.Component {
             gameStarted: false, 
             timerInSec: gameDuration
         }) 
-
+        
+        this.lastClickedPosition = 0
         clearInterval(this.clockCall)
 
 
@@ -231,7 +251,7 @@ export default class PlayScreen extends React.Component {
                     firstTeam = this.teamInputView.getInput(ModalTeamInput.FIRST_TEAM)
                     secondTeam = this.teamInputView.getInput(ModalTeamInput.SECOND_TEAM)
                     if(firstTeam == "" || secondTeam == "") {
-                        Alert.alert("ONE TEAM NOT NAMED")
+                        Alert.alert(i18n.t("alert_title_one_team_not_named"), i18n.t("alert_text_one_team_not_named"))
                         return
                     }
                     this.setState({teamInputVisible: false, teamOneName: firstTeam, teamTwoName: secondTeam})
@@ -246,7 +266,7 @@ export default class PlayScreen extends React.Component {
                 firstTeam = this.teamInputView.getInput(ModalTeamInput.FIRST_TEAM)
                 secondTeam = this.teamInputView.getInput(ModalTeamInput.SECOND_TEAM)
                 if(firstTeam == "" || secondTeam == "") {
-                    Alert.alert("ONE TEAM NOT NAMED")
+                    Alert.alert(i18n.t("alert_title_one_team_not_named"), i18n.t("alert_text_one_team_not_named"))
                     return
                 }
                 this.setState({teamInputVisible: false, teamOneName: firstTeam, teamTwoName: secondTeam})
@@ -263,9 +283,9 @@ export default class PlayScreen extends React.Component {
 
         modalView = ( 
             <View style={{height: "100%", width: "100%", justifyContent: "space-between", alignItems: "center", paddingTop: 40, paddingBottom: 40}}>
-                <ModalButton styles={{height: "25%", width: "80%", marginBottom: 20}} btnText={i18n.t("restartGame")} onPress={this.restartGame}/>
-                <ModalButton styles={{height: "25%", width: "80%", marginBottom: 20}} btnText={i18n.t("cancelGame")} onPress={() => navigate('Home')}/> 
-                <ModalButton styles={{height: "25%", width: "80%"}} btnText={i18n.t("backToGame")} onPress={() => this.setState({gameStopped: false})}/>
+                <ModalButton styles={{height: "25%", width: "80%", borderRadius: roundedCorner, marginBottom: 20}} btnText={i18n.t("restartGame")} onPress={this.restartGame}/>
+                <ModalButton styles={{height: "25%", width: "80%", borderRadius: roundedCorner, marginBottom: 20}} btnText={i18n.t("cancelGame")} onPress={() => navigate('Home')}/> 
+                <ModalButton styles={{height: "25%", width: "80%", borderRadius: roundedCorner,}} btnText={i18n.t("backToGame")} onPress={() => this.setState({gameStopped: false})}/>
             </View>
         )
 
@@ -293,6 +313,7 @@ export default class PlayScreen extends React.Component {
                 seconds = this.timeInputView.getInput(ModalTimeSet.SECOND)
 
                 inSec = (minutes * 60) + seconds
+                gameDuration = inSec
                 this.setState({onCountdownPressed: false, timerInSec: inSec})
             }}
              />
@@ -307,6 +328,7 @@ export default class PlayScreen extends React.Component {
                     seconds = this.timeInputView.getInput(ModalTimeSet.SECOND)
 
                     inSec = (minutes * 60) + seconds
+                    gameDuration = inSec
                     this.setState({onCountdownPressed: false, timerInSec: inSec})
                 }}/>
         )
@@ -314,12 +336,20 @@ export default class PlayScreen extends React.Component {
 
     render() {
         return (
+        <SafeAreaView style={styles.safeAreaView}>
             <View style={styles.rootView}>
             <KeepAwake />
             <StatusBar hidden={true} />
             {this.showTeamInputModal()}  
             {this.showStopModal()}
             {this.showChangeCountdownModal()}
+
+            {/* Even though the game control board will be shown at the bottom
+             we have to put up here in the code because otherwise this view overlays the GymnasticElement with an absolute position which would cause that no GymnasticElement is clickable anymore. */}
+            <View style={customStyles.controlBoard}>
+                <GameControlBoard current={this.state.current} total={this.state.total} gameStarted={this.state.gameStarted} gamePaused={this.state.gamePaused} onPlayPauseClick={this.onPlayPauseClick} onStopClick={this.onStop} onUndoClick={this.onUndoClick}/>
+            </View>
+            
 
             <GymnasticElement styles={customStyles.topLeftBuzzer} imageUri={ImageSources.buzzer.uri} onPress={() => this.onElementClick(Game.elements.BUZZER, 1)} />
 
@@ -351,12 +381,8 @@ export default class PlayScreen extends React.Component {
             <GymnasticElement styles={customStyles.bottomVaultingBock} imageUri= {ImageSources.vaultingBox.uri} onPress={() => this.onElementClick(Game.elements.VAULTING_BOCK, 8)}/>
 
             <GymnasticElement styles={customStyles.bottomRightBuzzer} imageUri= {ImageSources.buzzer.uri} onPress={() => this.onElementClick(Game.elements.BUZZER, 9)} />
-
-            <View style={customStyles.controlBoard}>
-                <GameControlBoard current={this.state.current} total={this.state.total} gameStarted={this.state.gameStarted} gamePaused={this.state.gamePaused} onPlayPauseClick={this.onPlayPauseClick} onStopClick={this.onStop} onUndoClick={this.onUndoClick}/>
-            </View>
-
         </View>
+        </SafeAreaView>
         )
     }
 } 
