@@ -1,6 +1,10 @@
 import { StyleSheet} from 'react-native';
 
 export default StyleSheet.create({
+    safeAreaView: {
+        flex: 1,
+        backgroundColor: '#faeff1',
+    },
     rootView: {
         width: "100%",
         height: "100%",
