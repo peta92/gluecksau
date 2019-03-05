@@ -8,9 +8,9 @@ export default class GymnasticElement extends React.Component {
   render() {
 
     return (
-      <TouchableHighlight style={[this.props.styles, customStyles.container, styles.defaultShadow]} onPress={() => this.props.onPress()} underlayColor={Colors.darkPink}>
+      <TouchableHighlight style={[this.props.styles, customStyles.container, styles.defaultShadow]} onPress={this.props.onPress} underlayColor="#f48fb1">
         <Image source={this.props.imageUri} style={customStyles.image} resizeMode='contain'/>
-        </TouchableHighlight>
+      </TouchableHighlight>
  
     )
   }

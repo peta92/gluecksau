@@ -6,6 +6,8 @@ import PlayIcon from '../assets/drawable/play.svg'
 import PauseIcon from '../assets/drawable/pause.svg'
 import UndoIcon from '../assets/drawable/undo.svg'
 import StopIcon from '../assets/drawable/stop.svg'
+import {responsiveFontSize} from '../styles/base'
+import {i18n} from '../strings'
 
 class GameControlBoard extends Component {
 
@@ -38,10 +40,9 @@ class GameControlBoard extends Component {
     }
 
     renderStopButton() {
-        isStarted = this.props.gameStarted != false;
-  
+        // The stop button should also be shown all the time so the user has a way to go back if he accidently started a game without start the game first
         return (                
-            <GameControlButton style={!isStarted ? customStyles.invisibleStyle:customStyles.visibleStyle} icon={(<StopIcon width={"100%"} height={"100%"} />)} onPress={this.props.onStopClick} />
+            <GameControlButton icon={(<StopIcon width={"100%"} height={"100%"} />)} onPress={this.props.onStopClick} />
         )       
     }
 
@@ -49,14 +50,14 @@ class GameControlBoard extends Component {
 		return (
             <View style={customStyles.root}>
             <View style={customStyles.textContainer}>
-                <Text style={customStyles.text}>Lauf</Text>
+                <Text style={customStyles.text}>{i18n.t("control_board_run")}</Text>
                 <Text style={customStyles.text}>{this.props.current}</Text>
             </View>
                 {this.renderUndoButton()}
                 {this.renderPlayPauseButton()}
                 {this.renderStopButton()}
                 <View style={customStyles.textContainer}>
-                <Text style={customStyles.text}>Total</Text>
+                <Text style={customStyles.text}>{i18n.t("control_board_total")}</Text>
                 <Text style={customStyles.text}>{this.props.total}</Text>
             </View>
           </View> 
@@ -82,7 +83,7 @@ const customStyles = StyleSheet.create({
         justifyContent: 'center',
     },
     text: {
-
+        fontSize: responsiveFontSize(1.5),
         textAlign: 'center',
         color: "white",
         fontWeight: 'bold',

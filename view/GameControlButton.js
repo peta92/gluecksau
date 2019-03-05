@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import { View, TouchableHighlight, StyleSheet,Dimensions } from 'react-native';
+import { View, TouchableOpacity, StyleSheet,Dimensions } from 'react-native';
 import styles from '../styles'
 
 class GameControlButton extends Component {
 	render() {
 		return (
             <View style={[customStyles.root, this.props.style]} >
-            <TouchableHighlight style={[customStyles.button, styles.defaultShadow]} onPress={this.props.onPress} underlayColor="red">
+            <TouchableOpacity style={[customStyles.button, styles.defaultShadow]} onPress={this.props.onPress} >
                 {this.props.icon}
-          </TouchableHighlight> 
+          </TouchableOpacity> 
           </View>
 		);
 	}

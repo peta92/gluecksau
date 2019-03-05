@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-nati
 import PropTypes from 'prop-types'
 import Colors from '../color'
 import { secInMinutes } from '../utils'
+import {fonts} from '../styles/base'
 
 export default class Countdown extends Component {
 
@@ -61,7 +62,8 @@ const customStyles = StyleSheet.create({
     },
     text: {
         color: Colors.darkPink,
-        fontWeight:"bold"
+        fontWeight:"bold",
+        fontSize: fonts.sm,
     },
     firstText: {
 

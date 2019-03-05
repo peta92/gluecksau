@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import {View, TextInput, StyleSheet} from 'react-native';
+import {View, TextInput, StyleSheet, Dimensions} from 'react-native';
 import PropTypes from 'prop-types';
 import {i18n} from '../strings'
 import styles from '../styles'
+import {fonts} from '../styles/base'
 
 export default class ModalTeamInput extends Component {
     static FIRST_TEAM = "first"
@@ -59,11 +60,11 @@ ModalTeamInput.propTypes = {
 const customStyles = new StyleSheet.create({
     modalInput: {
         backgroundColor: "white",
-        padding: 10,
-        borderRadius: 20,
+        padding: "5%",
+        borderRadius: Math.round(Dimensions.get('window').height) / 2,
         width: "90%",
         height: "30%",
-
+        fontSize: fonts.sm,
     },
     modalContainer: {
         justifyContent:"flex-end",

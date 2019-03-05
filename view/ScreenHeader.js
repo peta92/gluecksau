@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, TouchableOpacity, Image, StyleSheet, Dimensions} from 'react-native'
+import {View, Text, TouchableOpacity, Image, StyleSheet} from 'react-native'
 import PropTypes from 'prop-types'
 import ImageSource from '../ImageSources'
 import { responsiveFontSize } from '../styles/base'

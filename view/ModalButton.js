@@ -3,6 +3,7 @@ import {Text, TouchableOpacity, StyleSheet} from 'react-native'
 import PropTypes from 'prop-types'
 import Colors from '../color'
 import styles from '../styles'
+import {fonts} from '../styles/base'
 
 export default class ModalButton extends Component {
   render() {
@@ -27,11 +28,11 @@ const customStyles = new StyleSheet.create({
       padding: 12,
       justifyContent: 'center',
       alignItems: 'center',
-      borderRadius: 50,
       borderColor: 'rgba(0, 0, 0, 0.1)',
      
     },
     buttonText: {
+      fontSize: fonts.sm,
       color: Colors.darkPink,
       fontWeight: "bold"
     }

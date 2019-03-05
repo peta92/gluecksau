@@ -1,8 +1,9 @@
 import React, {Component} from 'react'
-import {View, TextInput, Text, StyleSheet} from 'react-native'
+import {View, TextInput, Text, StyleSheet, Dimensions} from 'react-native'
 import PropTypes from 'prop-types'
 import {i18n} from '../strings'
 import styles from '../styles'
+import {fonts} from '../styles/base'
 
 export default class ModalTimeSet extends Component {
     static MINUTE = "minute"
@@ -35,7 +36,9 @@ export default class ModalTimeSet extends Component {
     return (
         <View style={[customStyles.modalContainer, {width: this.props.width, height: this.props.height}]}>
             <View style={customStyles.labelInputContainer}>
-                <Text style={customStyles.label}>{i18n.t("minutePlaceholder")}</Text>
+                <View style = { customStyles.labelContainer }>
+                    <Text style={customStyles.label}>{i18n.t("minutePlaceholder")}</Text>
+                </View> 
                 <TextInput 
                     returnKeyType = { "next" }
                     onSubmitEditing={() => { this.secondsInput.focus(); }}
@@ -56,7 +59,10 @@ export default class ModalTimeSet extends Component {
             </View>
             <View style={{height: "5%"}} />
             <View style={customStyles.labelInputContainer}>
-                <Text style={customStyles.label}>{i18n.t("secondsPlaceholder")}</Text>
+                <View style = { customStyles.labelContainer }>
+                    <Text style={customStyles.label}>{i18n.t("secondsPlaceholder")}</Text>
+                </View> 
+
                 <TextInput 
                     ref={input => this.secondsInput = input} 
                     placeholder={i18n.t("secondsPlaceholder")} 
@@ -102,18 +108,24 @@ const customStyles = new StyleSheet.create({
         justifyContent: "space-between",
         alignItems: "center"
     },
+    labelContainer: {
+        width: "30%",
+        height: "100%",
+        justifyContent:'center',
+        alignItems: "center",
+    },
     label: {
         textAlign:"center",
         textAlignVertical: "center",
         color: "white",
         fontWeight: "bold",
-        width: "30%",
-        height: "100%"
+        fontSize: fonts.sm,
     },
     modalInput: {
         backgroundColor: "white",
-        padding: 10,
-        borderRadius: 20,
+        padding: "5%",
+        borderRadius: Math.round(Dimensions.get('window').height) / 2,
+        fontSize: fonts.sm,
         width: "60%",
         height: "70%",
     }
