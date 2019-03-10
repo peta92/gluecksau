@@ -27,38 +27,51 @@ function findBestRun(histories) {
     return highestTotalPoints
 }
 
+buzzerAddFnc = current => current * 2
+buzzerUndoFnc = current => current / 2
+vaultingBockAddFnc = current => current + 1
+vaultingBockUndoFnc = current => current - 1
+matAddFnc = current => current + 2
+matUndoFnc = current => current - 2
+ringsAddFnc = current => current + 3
+ringsUndoFnc = current => current - 3
+vaultingHorseAddFnc = current => current + 4
+vaultingHorseUndoFnc = current => current - 4
+longBenchAddFnc = current => current + 5
+longBenchUndoFnc = current => current - 5
+
 export default class Game {
 
     static elements = {
         BUZZER: {
             name: 'buzzer',
-            addFnc: current => current * 2,
-            undoFnc: current => current / 2,
+            addFnc: buzzerAddFnc,
+            undoFnc: buzzerUndoFnc,
         },
         VAULTING_BOCK: {
             name: 'vaulting_bock',
-            addFnc: current => current + 1,
-            undoFnc: current => current - 1,
+            addFnc: vaultingBockAddFnc,
+            undoFnc: vaultingBockUndoFnc,
         },
         MAT: {
             name: 'mat',
-            addFnc: current => current + 2,
-            undoFnc: current => current - 2,
+            addFnc: matAddFnc,
+            undoFnc: matUndoFnc,
         },
         RINGS: {
             name: 'rings',
-            addFnc: current => current + 3,
-            undoFnc: current => current - 3,
+            addFnc: ringsAddFnc,
+            undoFnc: ringsUndoFnc,
         },
         VAULTING_HORSE: {
             name: 'vaulting_horse',
-            addFnc: current => current + 4,
-            undoFnc: current => current - 4,
+            addFnc: vaultingHorseAddFnc,
+            undoFnc: vaultingHorseUndoFnc,
         },
         LONG_BENCH: {
             name: 'long_bench',
-            addFnc: current => current + 5,
-            undoFnc: current => current - 5,
+            addFnc: longBenchAddFnc,
+            undoFnc: longBenchUndoFnc,
         }
     }
 
@@ -69,6 +82,9 @@ export default class Game {
         this.runHistory = []
         this.totalHistory = []
 
+        // This variable holds the position of the last clicked element, so it can be ensured that the same element isn't clicked multiple times in a row
+        this.lastPosition = 0
+
         this.addPoints = this.addPoints.bind(this)
         this.saveRun = this.saveRun.bind(this)
         this.cancelRun = this.cancelRun.bind(this)
@@ -78,14 +94,20 @@ export default class Game {
 
     }
 
-    addPoints(element) { 
+    addPoints(element, position) { 
+        // The same element on the same position (some element exists twice therefore we need the position) can just be clicked once in a row. Otherwise it doesn't count
+        if(this.lastPosition != 0 && this.lastPosition == position) {
+            return
+        }
+
         validElement = findValidElement(element)
         if(validElement == null) {
             return
         }
-
+        
+        this.lastPosition = position
         this.current = validElement.addFnc(this.current)
-        historyEntry = {name: validElement.name}
+        historyEntry = {name: validElement.name, position: position}
         this.runHistory.push(historyEntry)
     }
 
@@ -96,12 +118,16 @@ export default class Game {
             return
         }
         this.current = validElement.undoFnc(this.current)
+
+        newLatestElement = this.runHistory[this.runHistory.length-1]
+        this.lastPosition = newLatestElement.position
     }
 
     /**
      * cancelRun resets all current points to 0 because the running player was hit by a ball
      */
     cancelRun() {
+        this.lastPosition = 0
         this.current = 0
         this.runHistory = []
     }
@@ -114,6 +140,7 @@ export default class Game {
         this.totalHistory.push({run_points: this.current, history: this.runHistory})
         this.current = 0
         this.runHistory = []
+        this.lastPosition = 0
     }
 
     getCurrent() {

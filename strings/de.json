@@ -31,12 +31,12 @@
     "alert_title_one_team_not_named": "Ein Teamname ist noch nicht bekannt!",
     "alert_text_one_team_not_named": "Gehe sicher, dass für beide Teams ein Name definiert ist.",
     "alert_title_first_team_finished": "Zeit um für das erste Team!",
-    "alert_text_first_team_finished": "Das zweite Team kann sich bereit machen.",
+    "alert_text_first_team_finished": "Das erste Team machte %{total} Punkte!\n\nDas zweite Team kann sich bereit machen.",
     "alert_title_game_is_not_running": "Das Spiel ist nicht gestartet!",
     "alert_text_game_is_not_running": "Starte das Spiel zuerst!",
     "alert_title_no_one_won": "Niemand hat gewonnen!",
-    "alert_text_no_one_won": "Die totale Punktzahl sowie die Punktzahl vom besten Lauf sind von beiden Teams identisch, daher kann kein Gewinner ermittelt werden.",
-    "alert_title_won": " gewinnt!",
-    "alert_text_won_by_total": "... aufgrund der höheren Gesamtpunktzahl.",
-    "alert_text_won_by_best_run": "... aufgrund der höheren Punktzahl beim besten Lauf."
+    "alert_text_no_one_won": "Die totale Punktzahl sowie die Punktzahl vom besten Lauf sind von beiden Teams identisch, daher kann kein Gewinner ermittelt werden.\n\nEndresultat: %{firstTotal} : %{secondTotal}\nBester Einzellauf: %{firstTeamBestRun} : %{secondTeamBestRun}",
+    "alert_title_won": "%{name} gewinnt!",
+    "alert_text_won_by_total": "... aufgrund der höheren Gesamtpunktzahl.\n\nEndresultat: %{firstTotal} : %{secondTotal}",
+    "alert_text_won_by_best_run": "... aufgrund der höheren Punktzahl beim besten Lauf.\n\nEndresultat: %{firstTotal} : %{secondTotal}\nBester Einzellauf: %{firstTeamBestRun} : %{secondTeamBestRun}"
 }

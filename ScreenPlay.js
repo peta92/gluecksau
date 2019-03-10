@@ -43,9 +43,6 @@ export default class PlayScreen extends React.Component {
 
         this.game = new Game()
 
-        // This variable holds the position of the last clicked element, so it can be ensured that the same element isn't clicked multiple times in a row
-        this.lastClickedPosition = 0
-
         // The first team entered always starts the game 
         this.playingTeam = FIRST_TEAM
 
@@ -90,11 +87,12 @@ export default class PlayScreen extends React.Component {
     onTeamFinished() {
         tempOneKey = "temp_one"
         if(this.playingTeam == FIRST_TEAM) {
+            total = this.game.total
             LocalStorage.saveObject(tempOneKey, this.game.exportGameData())
             this.restartGame()
             this.playingTeam = SECOND_TEAM
             // Nice animation for showing that it is the turn of the second team
-            Alert.alert(i18n.t("alert_title_first_team_finished"), i18n.t("alert_text_first_team_finished"))
+            Alert.alert(i18n.t("alert_title_first_team_finished"), i18n.t("alert_text_first_team_finished", {total: total}))
             return;
         }
 
@@ -104,27 +102,32 @@ export default class PlayScreen extends React.Component {
             
                 gameData = new GameHistory(this.state.teamOneName, this.state.teamTwoName,
                     teamOneGameData, teamTwoGameData)
+
+                firstTotal = teamOneGameData.total_points 
+                secondTotal = teamTwoGameData.total_points 
+                firstTeamBestRun = teamOneGameData.best_run_points
+                secondTeamBestRun = teamTwoGameData.best_run_points
                 
                 LocalStorage.saveObject(""+gameData.timestamp, gameData).then(() => {
                     LocalStorage.delete(tempOneKey)
 
                     // If there rare case becomes true that the total points and also the best run points we have to show a special alert
-                    if(teamOneGameData.total_points == teamTwoGameData.total_points && teamOneGameData.best_run_points == teamTwoGameData.best_run_points) {
-                        Alert.alert(i18n.t("alert_title_no_one_won"), i18n.t("alert_text_no_one_won"),
+                    if(firstTotal == secondTotal && firstTeamBestRun == secondTeamBestRun) {
+                        Alert.alert(i18n.t("alert_title_no_one_won"), i18n.t("alert_text_no_one_won", {firstTotal: firstTotal, secondTotal: secondTotal, firstTeamBestRun: firstTeamBestRun, secondTeamBestRun: secondTeamBestRun}),
                         [{text: 'OK', onPress: () => this.props.navigation.navigate("Home")}])
                         return
                     }
 
                     winner = ""
                     alertMessage = ""
-                    if(teamOneGameData.total_points != teamTwoGameData.total_points) {
-                        winner = teamOneGameData.total_points > teamTwoGameData.total_points ? this.state.teamOneName : this.state.teamTwoName
-                        alertMessage = i18n.t("alert_text_won_by_total")
+                    if(firstTotal != secondTotal) {
+                        winner = firstTotal > secondTotal ? this.state.teamOneName : this.state.teamTwoName
+                        alertMessage = i18n.t("alert_text_won_by_total", {firstTotal: firstTotal, secondTotal: secondTotal})
                     } else {
-                        winner = teamOneGameData.best_run_points > teamTwoGameData.best_run_points ? this.state.teamOneName : this.state.teamTwoName
-                        alertMessage = i18n.t("alert_text_won_by_best_run")
+                        winner = firstTeamBestRun > secondTeamBestRun ? this.state.teamOneName : this.state.teamTwoName
+                        alertMessage = i18n.t("alert_text_won_by_best_run", {firstTotal: firstTotal, secondTotal: secondTotal, firstTeamBestRun: firstTeamBestRun, secondTeamBestRun: secondTeamBestRun})
                     }
-                    Alert.alert(winner + i18n.t("alert_title_won"), alertMessage,
+                    Alert.alert(i18n.t("alert_title_won", {name: winner}), alertMessage,
                     [{text: 'OK', onPress: () => this.props.navigation.navigate("Home")}])       
                 })
             }).catch(error => console.log(error.message))
@@ -143,13 +146,7 @@ export default class PlayScreen extends React.Component {
             return
         }
 
-        // The same element on the same position (some element exists twice therefore we need the position) can just be clicked once in a row. Otherwise it doesn't count
-        if(this.lastClickedPosition != 0 && this.lastClickedPosition == position) {
-            return
-        }
-
-        this.lastClickedPosition = position 
-        this.game.addPoints(elementName)
+        this.game.addPoints(elementName, position)
         current = this.game.getCurrent()
         this.setState({current: current}) 
     }
@@ -226,7 +223,6 @@ export default class PlayScreen extends React.Component {
             timerInSec: gameDuration
         }) 
         
-        this.lastClickedPosition = 0
         clearInterval(this.clockCall)
 
 

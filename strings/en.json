@@ -31,12 +31,12 @@
     "alert_title_one_team_not_named": "One team name isn't defined yet!",
     "alert_text_one_team_not_named": "Please go sure you defined a name for both teams.",
     "alert_title_first_team_finished": "Time is up for the first team!",
-    "alert_text_first_team_finished": "The second team can get ready.",
+    "alert_text_first_team_finished": "The first team made %{total} points!\n\nThe second team can get ready.",
     "alert_title_game_is_not_running": "The game is not started!",
     "alert_text_game_is_not_running": "Start the game first!",
     "alert_title_no_one_won": "No one won!",
-    "alert_text_no_one_won": "The total points and also the best run points are identically therefore there is no winner",
-    "alert_title_won": " wins!",
-    "alert_text_won_by_total": "... because of the higher total points.",
-    "alert_text_won_by_best_run": "... because of the higher points in the best single run."
+    "alert_text_no_one_won": "The total points and also the best run points are identically therefore there is no winner.\n\nEnd result: %{firstTotal} : %{secondTotal}\nBest single run: %{firstTeamBestRun} : %{secondTeamBestRun}",
+    "alert_title_won": "%{name} wins!",
+    "alert_text_won_by_total": "... because of the higher total points.\n\nEnd result: %{firstTotal} : %{secondTotal}",
+    "alert_text_won_by_best_run": "... because of the higher points in the best single run.\n\nEnd result: %{firstTotal} : %{secondTotal}\nBest single run: %{firstTeamBestRun} : %{secondTeamBestRun}"
 }
