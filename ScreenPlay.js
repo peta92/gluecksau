@@ -205,9 +205,10 @@ export default class PlayScreen extends React.Component {
      * Called after press on the undo button on the game control board
      */
     onUndoClick() {
-        this.game.removeLatestAddPoints()
+        this.game.undoLatestAction()
         current = this.game.getCurrent() 
-        this.setState({current: current}) 
+        total = this.game.getTotal()
+        this.setState({current: current, total: total}) 
     }
 
     /**
@@ -378,12 +379,12 @@ export default class PlayScreen extends React.Component {
 
             <GymnasticElement styles={customStyles.vaultingHorse} imageUri= {ImageSources.vaultingHorse.uri} onPress={() => this.onElementClick(Game.elements.VAULTING_HORSE, 6)} isLastClicked={this.isLastClickedElement(6)}/>
 
-            <GymnasticElement styles={customStyles.savePoints} imageUri={ImageSources.savePoints.uri} onPress={this.onSave} isLastClicked={this.isLastClickedElement(-1)}/>
+            <GymnasticElement styles={customStyles.savePoints} imageUri={ImageSources.savePoints.uri} onPress={this.onSave} isLastClicked={this.isLastClickedElement(Game.SAVE_RUN_BTN_POSITION)}/>
 
             <GymnasticElement styles={customStyles.rightMat} imageUri= {ImageSources.mat.uri} onPress={() => this.onElementClick(Game.elements.MAT, 7)} isLastClicked={this.isLastClickedElement(7)}/>
 
 
-            <GymnasticElement styles={customStyles.deletePoints}  imageUri={ImageSources.deletePoints.uri} onPress={this.onDelete} isLastClicked={this.isLastClickedElement(-2)}/>
+            <GymnasticElement styles={customStyles.deletePoints}  imageUri={ImageSources.deletePoints.uri} onPress={this.onDelete} isLastClicked={this.isLastClickedElement(Game.DELETE_RUN_BTN_POSITION)}/>
 
             <GymnasticElement styles={customStyles.bottomVaultingBock} imageUri= {ImageSources.vaultingBox.uri} onPress={() => this.onElementClick(Game.elements.VAULTING_BOCK, 8)} isLastClicked={this.isLastClickedElement(8)}/>
 
