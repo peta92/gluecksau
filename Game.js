@@ -91,7 +91,8 @@ export default class Game {
         this.getCurrent = this.getCurrent.bind(this)
         this.getTotal = this.getTotal.bind(this)
         this.removeLatestAddPoints = this.removeLatestAddPoints.bind(this)
-
+        this.getLastClickedPosition = this.getLastClickedPosition.bind(this)
+        this.exportGameData = this.exportGameData.bind(this)
     }
 
     addPoints(element, position) { 
@@ -120,6 +121,11 @@ export default class Game {
         this.current = validElement.undoFnc(this.current)
 
         newLatestElement = this.runHistory[this.runHistory.length-1]
+        if(newLatestElement == undefined || newLatestElement == null) {
+            this.lastPosition = 0
+            return
+        }
+
         this.lastPosition = newLatestElement.position
     }
 
@@ -127,7 +133,9 @@ export default class Game {
      * cancelRun resets all current points to 0 because the running player was hit by a ball
      */
     cancelRun() {
-        this.lastPosition = 0
+        // we set it to -2 so we can identify it easier as the last action was to cancel the run
+        this.lastPosition = -2
+
         this.current = 0
         this.runHistory = []
     }
@@ -140,7 +148,12 @@ export default class Game {
         this.totalHistory.push({run_points: this.current, history: this.runHistory})
         this.current = 0
         this.runHistory = []
-        this.lastPosition = 0
+        // we set it to -1 so we can identify it easier as the last action was to save the run points
+        this.lastPosition = -1
+    }
+
+    getLastClickedPosition() {
+        return this.lastPosition
     }
 
     getCurrent() {

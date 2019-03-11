@@ -33,7 +33,6 @@ export default class PlayScreen extends React.Component {
             total: 0,
             teamOneName: "",
             teamTwoName: "",
-            timerInSec: gameDuration, // 4 minutes
             gameStarted: false,
             gamePaused: false,
             gameStopped: false,
@@ -57,6 +56,7 @@ export default class PlayScreen extends React.Component {
         this.restartGame = this.restartGame.bind(this)
         this.startCountdown = this.startCountdown.bind(this)
         this.onTeamFinished = this.onTeamFinished.bind(this)
+        this.isLastClickedElement = this.isLastClickedElement.bind(this)
     }
 
     startCountdown() {
@@ -66,12 +66,12 @@ export default class PlayScreen extends React.Component {
                 return;
             }
 
-            if(this.state.timerInSec == 0) {
+            if(this.countdownElement.getTimeInSec() == 0) {
                 clearInterval(this.clockCall)
                 this.onTeamFinished()
                 return
             }
-            this.setState({timerInSec: this.state.timerInSec - 1})
+            this.countdownElement.setTime(this.countdownElement.getTimeInSec() - 1)
         }, 1000)
     }
     
@@ -151,6 +151,14 @@ export default class PlayScreen extends React.Component {
         this.setState({current: current}) 
     }
 
+    isLastClickedElement(position) {
+        if(!this.state.gameStarted) {
+            return false
+        }
+
+        return this.game.getLastClickedPosition() == position
+    }
+
     /**
      * Called when the element "delete run points" is clicked 
      * and the current run points should be reset to 0
@@ -220,8 +228,9 @@ export default class PlayScreen extends React.Component {
             gamePaused: false, 
             gameStopped: false, 
             gameStarted: false, 
-            timerInSec: gameDuration
         }) 
+
+        this.countdownElement.setTime(gameDuration)
         
         clearInterval(this.clockCall)
 
@@ -295,7 +304,7 @@ export default class PlayScreen extends React.Component {
      * => See state variable "gameStarted"
      */
     showChangeCountdownModal() { 
-        time = secInMinutes(this.state.timerInSec)
+        time = secInMinutes(gameDuration)
 
         modalView = ( 
             <ModalTimeSet 
@@ -310,7 +319,8 @@ export default class PlayScreen extends React.Component {
 
                 inSec = (minutes * 60) + seconds
                 gameDuration = inSec
-                this.setState({onCountdownPressed: false, timerInSec: inSec})
+                this.countdownElement.setTime(inSec)
+                this.setState({onCountdownPressed: false})
             }}
              />
         )
@@ -325,7 +335,8 @@ export default class PlayScreen extends React.Component {
 
                     inSec = (minutes * 60) + seconds
                     gameDuration = inSec
-                    this.setState({onCountdownPressed: false, timerInSec: inSec})
+                    this.countdownElement.setTime(inSec)
+                    this.setState({onCountdownPressed: false})
                 }}/>
         )
     }
@@ -347,36 +358,36 @@ export default class PlayScreen extends React.Component {
             </View>
             
 
-            <GymnasticElement styles={customStyles.topLeftBuzzer} imageUri={ImageSources.buzzer.uri} onPress={() => this.onElementClick(Game.elements.BUZZER, 1)} />
+            <GymnasticElement styles={customStyles.topLeftBuzzer} imageUri={ImageSources.buzzer.uri} onPress={() => this.onElementClick(Game.elements.BUZZER, 1)} isLastClicked={this.isLastClickedElement(1)}/>
 
-            <GymnasticElement styles={customStyles.topRightVaultingBox}  imageUri={ImageSources.vaultingBox.uri} onPress={() => this.onElementClick(Game.elements.VAULTING_BOCK, 2)}/>
+            <GymnasticElement styles={customStyles.topRightVaultingBox}  imageUri={ImageSources.vaultingBox.uri} onPress={() => this.onElementClick(Game.elements.VAULTING_BOCK, 2)} isLastClicked={this.isLastClickedElement(2)}/>
 
             <View style={customStyles.countdown}>
-                <Countdown time={this.state.timerInSec} width={"100%"} height={"100%"} onPress={() => {
+                <Countdown ref={el => this.countdownElement = el} time={gameDuration} width={"100%"} height={"100%"} onPress={() => {
                     if(this.state.gameStarted) {
                         return
                     }
                     this.setState({onCountdownPressed: true})
                 }}/>
             </View>
-            <GymnasticElement styles={customStyles.rings}  imageUri= {ImageSources.rings.uri} onPress={() => this.onElementClick(Game.elements.RINGS, 3)}/>
+            <GymnasticElement styles={customStyles.rings}  imageUri= {ImageSources.rings.uri} onPress={() => this.onElementClick(Game.elements.RINGS, 3)} isLastClicked={this.isLastClickedElement(3)}/>
 
-            <GymnasticElement styles={customStyles.longBench} imageUri= {ImageSources.longBench.uri} onPress={() => this.onElementClick(Game.elements.LONG_BENCH, 4)} />
+            <GymnasticElement styles={customStyles.longBench} imageUri= {ImageSources.longBench.uri} onPress={() => this.onElementClick(Game.elements.LONG_BENCH, 4)} isLastClicked={this.isLastClickedElement(4)}/>
 
-            <GymnasticElement styles={customStyles.leftMat} imageUri= {ImageSources.mat.uri}  onPress={() => this.onElementClick(Game.elements.MAT, 5)} />
+            <GymnasticElement styles={customStyles.leftMat} imageUri= {ImageSources.mat.uri}  onPress={() => this.onElementClick(Game.elements.MAT, 5)} isLastClicked={this.isLastClickedElement(5)}/>
 
-            <GymnasticElement styles={customStyles.vaultingHorse} imageUri= {ImageSources.vaultingHorse.uri} onPress={() => this.onElementClick(Game.elements.VAULTING_HORSE, 6)} />
+            <GymnasticElement styles={customStyles.vaultingHorse} imageUri= {ImageSources.vaultingHorse.uri} onPress={() => this.onElementClick(Game.elements.VAULTING_HORSE, 6)} isLastClicked={this.isLastClickedElement(6)}/>
 
-            <GymnasticElement styles={customStyles.savePoints} imageUri={ImageSources.savePoints.uri} onPress={this.onSave} />
+            <GymnasticElement styles={customStyles.savePoints} imageUri={ImageSources.savePoints.uri} onPress={this.onSave} isLastClicked={this.isLastClickedElement(-1)}/>
 
-            <GymnasticElement styles={customStyles.rightMat} imageUri= {ImageSources.mat.uri} onPress={() => this.onElementClick(Game.elements.MAT, 7)} />
+            <GymnasticElement styles={customStyles.rightMat} imageUri= {ImageSources.mat.uri} onPress={() => this.onElementClick(Game.elements.MAT, 7)} isLastClicked={this.isLastClickedElement(7)}/>
 
 
-            <GymnasticElement styles={customStyles.deletePoints}  imageUri={ImageSources.deletePoints.uri} onPress={this.onDelete} />
+            <GymnasticElement styles={customStyles.deletePoints}  imageUri={ImageSources.deletePoints.uri} onPress={this.onDelete} isLastClicked={this.isLastClickedElement(-2)}/>
 
-            <GymnasticElement styles={customStyles.bottomVaultingBock} imageUri= {ImageSources.vaultingBox.uri} onPress={() => this.onElementClick(Game.elements.VAULTING_BOCK, 8)}/>
+            <GymnasticElement styles={customStyles.bottomVaultingBock} imageUri= {ImageSources.vaultingBox.uri} onPress={() => this.onElementClick(Game.elements.VAULTING_BOCK, 8)} isLastClicked={this.isLastClickedElement(8)}/>
 
-            <GymnasticElement styles={customStyles.bottomRightBuzzer} imageUri= {ImageSources.buzzer.uri} onPress={() => this.onElementClick(Game.elements.BUZZER, 9)} />
+            <GymnasticElement styles={customStyles.bottomRightBuzzer} imageUri= {ImageSources.buzzer.uri} onPress={() => this.onElementClick(Game.elements.BUZZER, 9)} isLastClicked={this.isLastClickedElement(9)}/>
         </View>
         </SafeAreaView>
         )

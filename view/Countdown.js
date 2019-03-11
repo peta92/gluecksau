@@ -10,30 +10,45 @@ export default class Countdown extends Component {
     constructor(props) {
         super(props)
 
-        this.renderDisplayTime = this.renderDisplayTime.bind(this) 
+        this.state = {
+            minutes: 0,
+            seconds: 0,
+            timeInSec: this.props.time,
+        }
+
+        this.timeInSec = 0
+
+        this._renderDisplayTime = this._renderDisplayTime.bind(this) 
+        this.setTime = this.setTime.bind(this)
+        this.getTimeInSec = this.getTimeInSec.bind(this)
+
     }
 
-    renderDisplayTime(time) {
-        timeObj = secInMinutes(time)
+    setTime(timeInSec) {
+        this.setState({timeInSec: timeInSec})
+    }
+
+    getTimeInSec() {
+        return this.state.timeInSec
+    }
+
+    _renderDisplayTime() {
+        timeObj = secInMinutes(this.state.timeInSec)
 
         minutes = ('0' + timeObj.minutes).slice(-2)
         seconds = ('0' + timeObj.seconds).slice(-2)
 
-        return {
-            minutes: minutes,
-            seconds: seconds
-        }
+        return {minutes: minutes, seconds: seconds}
     }
 
 	render() {
-        displayTime = this.renderDisplayTime(this.props.time)
-
+        time = this._renderDisplayTime()
 		return (
             <TouchableOpacity style={{width: this.props.width, height: this.props.height, activeOpacity: 0}} onPress={this.props.onPress}>
             <View style={customStyles.container}>
-                <Text style={[customStyles.text, customStyles.firstText]}>{displayTime.minutes}</Text>
+                <Text style={[customStyles.text, customStyles.firstText]}>{time.minutes}</Text>
                 <Text style={[customStyles.text, customStyles.middleText]}>:</Text>
-                <Text style={[customStyles.text, customStyles.lastText]}>{displayTime.seconds}</Text>
+                <Text style={[customStyles.text, customStyles.lastText]}>{time.seconds}</Text>
             </View>
             </TouchableOpacity> 
 		);
