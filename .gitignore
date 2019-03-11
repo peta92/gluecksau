@@ -1,4 +1,4 @@
-.expo/*
+.expo/
 npm-debug.*
 *.jks
 *.p12
@@ -64,3 +64,8 @@ buck-out/
 
 # VS Code files
 .vscode/
+
+.eslintrc.json
+.watchmanconfig
+
+_miscellaneous/
