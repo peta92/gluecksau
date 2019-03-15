@@ -40,7 +40,7 @@ export default class ModalTimeSet extends Component {
                     <Text style={customStyles.label}>{i18n.t("minutePlaceholder")}</Text>
                 </View> 
                 <TextInput 
-                    returnKeyType = { "next" }
+                    returnKeyType ="next"
                     onSubmitEditing={() => { this.secondsInput.focus(); }}
                     placeholder={i18n.t("minutePlaceholder")} 
                     value={""+this.state.minuteInput} 

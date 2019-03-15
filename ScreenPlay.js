@@ -247,36 +247,30 @@ export default class PlayScreen extends React.Component {
         const {navigate} = this.props.navigation
         shouldShow = this.state.teamInputVisible
 
+        saveTeamNames = () => {
+            firstTeam = this.teamInputView.getInput(ModalTeamInput.FIRST_TEAM)
+            secondTeam = this.teamInputView.getInput(ModalTeamInput.SECOND_TEAM)
+            if(firstTeam == "" || secondTeam == "") {
+                Alert.alert(i18n.t("alert_title_one_team_not_named"), i18n.t("alert_text_one_team_not_named"))
+                return
+            }
+            this.setState({teamInputVisible: false, teamOneName: firstTeam, teamTwoName: secondTeam})
+        }
+
         contentView = (<View />)
         if(shouldShow) {
             contentView = (
                 <ModalTeamInput ref={ref => (this.teamInputView = ref)} 
                 width={"100%"}
                 height={"60%"}
-                onLastSubmitEditing={() => {
-                    firstTeam = this.teamInputView.getInput(ModalTeamInput.FIRST_TEAM)
-                    secondTeam = this.teamInputView.getInput(ModalTeamInput.SECOND_TEAM)
-                    if(firstTeam == "" || secondTeam == "") {
-                        Alert.alert(i18n.t("alert_title_one_team_not_named"), i18n.t("alert_text_one_team_not_named"))
-                        return
-                    }
-                    this.setState({teamInputVisible: false, teamOneName: firstTeam, teamTwoName: secondTeam})
-                }} />
+                onLastSubmitEditing={saveTeamNames} />
             )
         }
         return(
             <ModalView isVisible={shouldShow} 
             contentView={contentView} 
             onCancelBtnPress={() => navigate('Home')} 
-            onOkBtnPress={() => {
-                firstTeam = this.teamInputView.getInput(ModalTeamInput.FIRST_TEAM)
-                secondTeam = this.teamInputView.getInput(ModalTeamInput.SECOND_TEAM)
-                if(firstTeam == "" || secondTeam == "") {
-                    Alert.alert(i18n.t("alert_title_one_team_not_named"), i18n.t("alert_text_one_team_not_named"))
-                    return
-                }
-                this.setState({teamInputVisible: false, teamOneName: firstTeam, teamTwoName: secondTeam})
-            }}
+            onOkBtnPress={saveTeamNames}
             />
         )
     } 
@@ -307,22 +301,24 @@ export default class PlayScreen extends React.Component {
     showChangeCountdownModal() { 
         time = secInMinutes(gameDuration)
 
+        onLastSubmit = () => {
+            minutes = this.timeInputView.getInput(ModalTimeSet.MINUTE)
+            seconds = this.timeInputView.getInput(ModalTimeSet.SECOND)
+
+            inSec = (minutes * 60) + seconds
+            gameDuration = inSec
+            this.countdownElement.setTime(inSec)
+            this.setState({onCountdownPressed: false})
+        }
+
         modalView = ( 
             <ModalTimeSet 
-            ref={ref => (this.timeInputView = ref)} 
-            height="60%" 
-            width="100%"
-            minute={time.minutes}
-            seconds={time.seconds}
-            onLastSubmitEditing={() => {
-                minutes = this.timeInputView.getInput(ModalTimeSet.MINUTE)
-                seconds = this.timeInputView.getInput(ModalTimeSet.SECOND)
-
-                inSec = (minutes * 60) + seconds
-                gameDuration = inSec
-                this.countdownElement.setTime(inSec)
-                this.setState({onCountdownPressed: false})
-            }}
+                ref={ref => (this.timeInputView = ref)} 
+                height="60%" 
+                width="100%"
+                minute={time.minutes}
+                seconds={time.seconds}
+                onLastSubmitEditing={onLastSubmit}
              />
         )
 
@@ -330,15 +326,7 @@ export default class PlayScreen extends React.Component {
             <ModalView isVisible={this.state.onCountdownPressed} 
                 contentView={modalView} 
                 onCancelBtnPress={() => this.setState({onCountdownPressed: false})} 
-                onOkBtnPress={() => {
-                    minutes = this.timeInputView.getInput(ModalTimeSet.MINUTE)
-                    seconds = this.timeInputView.getInput(ModalTimeSet.SECOND)
-
-                    inSec = (minutes * 60) + seconds
-                    gameDuration = inSec
-                    this.countdownElement.setTime(inSec)
-                    this.setState({onCountdownPressed: false})
-                }}/>
+                onOkBtnPress={onLastSubmit}/>
         )
     }
 
