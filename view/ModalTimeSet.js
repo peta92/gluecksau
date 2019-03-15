@@ -68,6 +68,7 @@ export default class ModalTimeSet extends Component {
                     placeholder={i18n.t("secondsPlaceholder")} 
                     value={""+this.state.secondsInput} 
                     keyboardType='numeric' 
+                    returnKeyType='done'
                     style={[customStyles.modalInput, styles.defaultShadow]}
                     onSubmitEditing={() => this.props.onLastSubmitEditing()}
                     onChangeText={value => {
