@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, Alert, StatusBar, SafeAreaView } from 'react-native'
-import { KeepAwake } from 'expo'
+import { activateKeepAwake, deactivateKeepAwake }  from 'expo-keep-awake'
 import { secInMinutes } from './utils'
 import { i18n } from './strings'
 import styles from './styles'
@@ -74,10 +74,23 @@ export default class PlayScreen extends React.Component {
             this.countdownElement.setTime(this.countdownElement.getTimeInSec() - 1)
         }, 1000)
     }
+
+    componentDidMount() {
+        this._activateKeepAwake()
+    }
     
     componentWillUnmount() {
         clearInterval(this.clockCall)
+        this._deactivateKeepAwake()
     }
+
+    _activateKeepAwake = () => {
+        activateKeepAwake();
+      };
+    
+      _deactivateKeepAwake = () => {
+        deactivateKeepAwake();
+      };
 
     /**
      * Called when the countdown reaches 0. 
@@ -334,7 +347,6 @@ export default class PlayScreen extends React.Component {
         return (
         <SafeAreaView style={styles.safeAreaView}>
             <View style={styles.rootView}>
-            <KeepAwake />
             <StatusBar hidden={true} />
             {this.showTeamInputModal()}  
             {this.showStopModal()}

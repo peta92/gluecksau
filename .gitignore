@@ -69,3 +69,5 @@ buck-out/
 .watchmanconfig
 
 _miscellaneous/
+
+.expo-shared/

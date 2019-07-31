@@ -4,7 +4,7 @@
     "slug": "gluecksau",
     "description": "This app helps a local gymnastic club in Switzerland to count the points in the own created game 'Glücksau'. It also has a nice explanation page how this game has to be play and this way also other clubs, group of friends or school classes can play it.",
     "privacy": "public",
-    "sdkVersion": "32.0.0",
+    "sdkVersion": "34.0.0",
     "platforms": [
       "ios",
       "android"
@@ -35,8 +35,5 @@
       ]
     },
     "githubUrl": "https://github.com/peta92/gluecksau"
-  },
-  "packagerOpts": {
-    "config": "metro.config.js"
   }
 }

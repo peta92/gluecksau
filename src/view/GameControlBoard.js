@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import { View, StyleSheet, Text } from 'react-native'
 import GameControlButton from './GameControlButton'
 import Colors from '../color'
-import PlayIcon from '../assets/drawable/play.svg'
-import PauseIcon from '../assets/drawable/pause.svg'
-import UndoIcon from '../assets/drawable/undo.svg'
-import StopIcon from '../assets/drawable/stop.svg'
+import Play from './icons/Play' 
+import Pause from './icons/Pause' 
+import Undo from './icons/Undo'
+import Stop from './icons/Stop'
 import {responsiveFontSize} from '../styles/base'
 import {i18n} from '../strings'
 
@@ -22,12 +22,12 @@ class GameControlBoard extends Component {
     renderPlayPauseButton() {
         if(this.props.gameStarted == false || this.props.gamePaused == true) {
             return (
-                <GameControlButton icon={(<PlayIcon width={"100%"} height={"100%"} />)} onPress={this.props.onPlayPauseClick}/>
+                <GameControlButton icon={(<Play width={"100%"} height={"100%"} />)} onPress={this.props.onPlayPauseClick}/>
             );
         }
 
         return (
-            <GameControlButton icon={(<PauseIcon width={"100%"} height={"100%"} />)} onPress={this.props.onPlayPauseClick} />
+            <GameControlButton icon={(<Pause width={"100%"} height={"100%"} />)} onPress={this.props.onPlayPauseClick} />
         );
     }
 
@@ -35,14 +35,14 @@ class GameControlBoard extends Component {
         isStarted = this.props.gameStarted != false;
   
         return (                
-            <GameControlButton style={!isStarted ? customStyles.invisibleStyle:customStyles.visibleStyle} icon={(<UndoIcon width={"100%"} height={"100%"} />)} onPress={this.props.onUndoClick} />
+            <GameControlButton style={!isStarted ? customStyles.invisibleStyle:customStyles.visibleStyle} icon={(<Undo width={"100%"} height={"100%"} />)} onPress={this.props.onUndoClick} />
         )       
     }
 
     renderStopButton() {
         // The stop button should also be shown all the time so the user has a way to go back if he accidently started a game without start the game first
         return (                
-            <GameControlButton icon={(<StopIcon width={"100%"} height={"100%"} />)} onPress={this.props.onStopClick} />
+            <GameControlButton icon={(<Stop width={"100%"} height={"100%"} />)} onPress={this.props.onStopClick} />
         )       
     }
 

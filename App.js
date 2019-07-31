@@ -1,12 +1,13 @@
 import React from 'react'
-import { Asset, AppLoading } from 'expo'
+import { AppLoading } from 'expo'
+import { Asset } from 'expo-asset'
 import {createStackNavigator, createAppContainer } from 'react-navigation'
-import HomeScreen from './ScreenHome'
-import RulesScreen from './ScreenRules'
-import HistoryScreen from './ScreenHistory'
-import PlayScreen from './ScreenPlay'
-import ImageSources from './ImageSources'
-import './strings'
+import HomeScreen from './src/ScreenHome'
+import RulesScreen from './src/ScreenRules'
+import HistoryScreen from './src/ScreenHistory'
+import PlayScreen from './src/ScreenPlay'
+import ImageSources from './src/ImageSources'
+import './src/strings'
 
 const MainNavigator = createStackNavigator({
   Home: HomeScreen,
